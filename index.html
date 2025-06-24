@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yapay Zeka Destekli Sınav & İtalya Rehberi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Beige, Slate Gray, Muted Blue) -->
+    <!-- Application Structure Plan: A single-page, long-scrolling dashboard. The structure is thematic with a sticky top nav for easy jumping between sections. It now includes Gemini-powered features: a Personal Plan Generator and a Concept Explainer to provide dynamic, AI-assisted guidance. -->
+    <!-- Visualization & Content Choices: 1. Sınavlar/Müfredat/Planlar/Stratejiler: Existing structure. 2. İtalya Yol Haritası: New section converting the detailed Markdown guide into structured HTML. 3. ✨ Gemini Plan Generator: New tab in "Planlar" section for personalized plans. 4. ✨ Gemini Concept Explainer: New button in "Müfredat" table to open a modal with an AI-generated explanation. CONFIRMING NO SVG/Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .nav-link { transition: all 0.3s; }
+        .nav-link.active { color: #3b82f6; border-bottom-color: #3b82f6; }
+        .nav-link:not(.active) { border-bottom-color: transparent; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 400px; } }
+        section {
+            padding-top: 80px; /* Header height + extra space */
+            margin-top: -64px; /* Negative margin to offset anchor positioning */
+            min-height: 90vh;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .prose h3 { margin-top: 1.5em; margin-bottom: 0.5em; font-weight: bold; }
+        .prose ul { list-style-type: disc; margin-left: 1.5em; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-lg md:text-xl font-bold text-slate-900">Kapsamlı Sınav & İtalya Rehberi</h1>
+                <nav class="hidden lg:flex space-x-3">
+                    <a href="#genel-bakis" class="nav-link py-2 px-2 border-b-2 font-medium text-slate-600 hover:text-blue-500 text-sm">Sınavlara Bakış</a>
+                    <a href="#mufredat" class="nav-link py-2 px-2 border-b-2 font-medium text-slate-600 hover:text-blue-500 text-sm">Müfredat</a>
+                    <a href="#planlar" class="nav-link py-2 px-2 border-b-2 font-medium text-slate-600 hover:text-blue-500 text-sm">Çalışma Planları</a>
+                    <a href="#stratejiler" class="nav-link py-2 px-2 border-b-2 font-medium text-slate-600 hover:text-blue-500 text-sm">Stratejiler</a>
+                    <a href="#yol-haritasi" class="nav-link py-2 px-2 border-b-2 font-medium text-slate-600 hover:text-blue-500 text-sm">İtalya Yol Haritası</a>
+                </nav>
+                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden">
+            <a href="#genel-bakis" class="nav-link block py-2 px-4 text-sm hover:bg-slate-100">Sınavlara Bakış</a>
+            <a href="#mufredat" class="nav-link block py-2 px-4 text-sm hover:bg-slate-100">Müfredat</a>
+            <a href="#planlar" class="nav-link block py-2 px-4 text-sm hover:bg-slate-100">Çalışma Planları</a>
+            <a href="#stratejiler" class="nav-link block py-2 px-4 text-sm hover:bg-slate-100">Stratejiler</a>
+            <a href="#yol-haritasi" class="nav-link block py-2 px-4 text-sm hover:bg-slate-100">İtalya Yol Haritası</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <section id="genel-bakis">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Sınavlara Genel Bakış</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">YKS ve TOLC-I sınavlarının temel yapılarını, felsefelerini ve puanlama sistemlerini yan yana karşılaştırın.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-600">YKS (Yükseköğretim Kurumları Sınavı)</h3>
+                    <div class="space-y-4 text-slate-700">
+                        <p><strong class="font-semibold">Felsefe:</strong> Türkiye'deki üniversitelere girişte kullanılan, milyonlarca adayın yarıştığı, sıralama ve eleme odaklı, oldukça rekabetçi bir sınav sistemidir.</p>
+                        <div>
+                            <strong class="font-semibold">Puanlama:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-1">
+                                <li>Yerleştirme Puanı: <span class="font-mono bg-slate-100 px-2 py-1 rounded-md">%40 TYT + %60 AYT</span></li>
+                                <li>Net Hesaplama: 4 yanlış cevap, 1 doğru cevabı siler.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                    <h3 class="text-2xl font-bold mb-4 text-green-600">TOLC-I (Test OnLine CISIA per Ingegneria)</h3>
+                    <div class="space-y-4 text-slate-700">
+                        <p><strong class="font-semibold">Felsefe:</strong> İtalya'daki mühendislik ve teknik programlara girişte kullanılan, adayın temel yetkinliklerini ölçen bir yeterlilik ve sıralama sınavıdır.</p>
+                         <div>
+                            <strong class="font-semibold">Puanlama:</strong>
+                            <ul class="list-disc list-inside mt-1 space-y-1">
+                                <li>Doğru Cevap: <span class="font-mono bg-green-100 text-green-800 px-2 py-1 rounded-md">+1 puan</span></li>
+                                <li>Yanlış Cevap: <span class="font-mono bg-red-100 text-red-800 px-2 py-1 rounded-md">-0.25 puan</span></li>
+                                <li>Boş Cevap: <span class="font-mono bg-slate-100 px-2 py-1 rounded-md">0 puan</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                <h3 class="text-2xl font-bold mb-4 text-center text-slate-900">Soru Başına Düşen Süre Karşılaştırması</h3>
+                <p class="text-center text-slate-600 mb-6">Sınavların gerektirdiği farklı tempoları ve zaman yönetimi stratejilerini görsel olarak inceleyin.</p>
+                <div class="chart-container">
+                    <canvas id="timePerQuestionChart"></canvas>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="mufredat">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">İnteraktif Müfredat ve Video Rehberi</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Ders seçin, konuları karşılaştırın, video önerilerine ulaşın ve anlamadığınız konular için yapay zekadan yardım alın!</p>
+            </div>
+            
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
+                    <label for="subject-select" class="font-semibold text-lg">Ders Seçin:</label>
+                    <select id="subject-select" class="w-full sm:w-auto p-2 border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="matematik">Matematik</option>
+                        <option value="fizik">Fizik</option>
+                        <option value="kimya">Kimya</option>
+                    </select>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-slate-600">
+                        <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-l-lg">Konu</th>
+                                <th scope="col" class="px-6 py-3">YKS Kapsamı</th>
+                                <th scope="col" class="px-6 py-3">TOLC-I Kapsamı</th>
+                                <th scope="col" class="px-6 py-3">Video Önerisi</th>
+                                <th scope="col" class="px-6 py-3 rounded-r-lg">Yardım Al</th>
+                            </tr>
+                        </thead>
+                        <tbody id="curriculum-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="planlar">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Çalışma Planları</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Örnek planları inceleyin veya size özel bir plan oluşturması için yapay zekadan yardım alın.</p>
+            </div>
+
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                 <div class="mb-4 border-b border-slate-200">
+                    <nav class="flex flex-wrap -mb-px" id="plan-tabs">
+                        <button data-target="gemini-plan" class="plan-tab whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm text-blue-600 border-blue-600">
+                            ✨ Kişisel Plan Oluştur
+                        </button>
+                        <button data-target="yks-plan" class="plan-tab whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300 border-transparent">
+                            YKS Örnek Planı
+                        </button>
+                        <button data-target="tolci-plan" class="plan-tab whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300 border-transparent">
+                            TOLC-I Örnek Planı
+                        </button>
+                    </nav>
+                </div>
+                
+                <div id="gemini-plan" class="plan-content">
+                    <h3 class="text-xl font-bold mb-2">✨ Kişiselleştirilmiş Haftalık Çalışma Planı Oluşturucu</h3>
+                    <p class="mb-6 text-slate-600">Zayıf ve güçlü olduğunuz konuları girin, yapay zeka size özel, dengeli ve verimli bir haftalık çalışma programı oluştursun.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="weak-subjects" class="block text-sm font-medium text-slate-700">Zayıf Olduğunuz Konular (Virgülle ayırın)</label>
+                            <input type="text" id="weak-subjects" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Örn: Trigonometri, Organik Kimya">
+                        </div>
+                        <div>
+                            <label for="strong-subjects" class="block text-sm font-medium text-slate-700">Güçlü Olduğunuz Konular (Virgülle ayırın)</label>
+                            <input type="text" id="strong-subjects" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Örn: Temel Kavramlar, Mekanik">
+                        </div>
+                    </div>
+                     <div class="mb-4">
+                        <label for="exam-type" class="block text-sm font-medium text-slate-700">Hedef Sınav</label>
+                        <select id="exam-type" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option>YKS (TYT ve AYT)</option>
+                            <option>TOLC-I</option>
+                        </select>
+                    </div>
+                    <button id="generate-plan-btn" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center">
+                        <span class="mr-2">✨</span> Planımı Oluştur
+                    </button>
+                    
+                    <div id="plan-result-container" class="mt-6">
+                    </div>
+                </div>
+
+                <div id="yks-plan" class="plan-content hidden">
+                    <h3 class="text-xl font-bold mb-2">YKS Örnek Metodolojisi: "Çalış-Çöz-Sentezle" (3S)</h3>
+                    <p class="mb-6 text-slate-600">Bu döngü, öğrenmeyi kalıcı hale getirmeyi hedefler. Günlük çalışma blokları bu üç aşama etrafında şekillenir.</p>
+                    <div class="space-y-2 mb-6">
+                        <label for="yks-week-slider" class="font-semibold">Örnek Hafta Seçin: <span id="yks-week-label" class="font-bold text-blue-600">1</span>/4</label>
+                        <input id="yks-week-slider" type="range" min="1" max="4" value="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div id="yks-schedule-container" class="overflow-x-auto"></div>
+                </div>
+
+                <div id="tolci-plan" class="plan-content hidden">
+                    <h3 class="text-xl font-bold mb-2">TOLC-I Örnek Metodolojisi: "Günlük Antrenman"</h3>
+                    <p class="mb-6 text-slate-600">Fiziksel bir antrenman gibi tasarlanan bu yapı, zihni aşamalı olarak hazırlar.</p>
+                    <div class="space-y-2 mb-6">
+                        <label for="tolci-week-slider" class="font-semibold">Örnek Hafta Seçin: <span id="tolci-week-label" class="font-bold text-green-600">1</span>/16</label>
+                        <input id="tolci-week-slider" type="range" min="1" max="16" value="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div id="tolci-schedule-container" class="overflow-x-auto"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="stratejiler">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Strateji ve Teknikler</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Sınavlarda netlerinizi artıracak, zamanı doğru kullanmanızı sağlayacak ve stresi yönetecek kanıtlanmış yöntemler.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="strategy-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <h3 class="text-xl font-bold mb-2">Turlama Tekniği</h3>
+                    <p class="text-slate-600">İlk turda kolay soruları çözerek puanları garantileme, zorları sona bırakma stratejisi.</p>
+                    <div class="strategy-details hidden mt-4 text-sm text-slate-700 bg-slate-50 p-4 rounded-md">
+                        <strong>Nasıl Uygulanır:</strong> Sınava başladığınızda, emin olduğunuz ve hızlıca çözebileceğiniz tüm soruları çözün. Zaman alıcı veya zor soruları işaretleyip atlayın. Sona geldiğinizde, kalan sürede işaretlediğiniz sorulara geri dönün.
+                    </div>
+                </div>
+                <div class="strategy-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <h3 class="text-xl font-bold mb-2">Hata Analizi ve Defteri</h3>
+                    <p class="text-slate-600">Yaptığınız hataları sadece görmekle kalmayın, onları birer öğrenme fırsatına çevirin.</p>
+                     <div class="strategy-details hidden mt-4 text-sm text-slate-700 bg-slate-50 p-4 rounded-md">
+                        <strong>Nasıl Uygulanır:</strong> Her yanlış ve boş soruyu bir deftere not alın. Soruyu, doğru çözümü ve en önemlisi "Neden Hata Yaptım?" sorusunun cevabını yazın. Bu defteri düzenli tekrar etmek, aynı hataları yapmanızı engeller.
+                    </div>
+                </div>
+                <div class="strategy-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <h3 class="text-xl font-bold mb-2">Stratejik Tahmin</h3>
+                    <p class="text-slate-600">Yanlışların doğruları götürdüğü sınavlarda ne zaman risk alınmalı, ne zaman boş bırakılmalı?</p>
+                     <div class="strategy-details hidden mt-4 text-sm text-slate-700 bg-slate-50 p-4 rounded-md">
+                        <strong>TOLC-I:</strong> -0.25 ceza puanı nedeniyle rastgele atmak risklidir. 2 şıkkı eleyebiliyorsanız tahmin mantıklı olabilir. <br>
+                        <strong>YKS:</strong> 4 yanlış 1 doğruyu götürdüğü için 2'den fazla seçeneği eleyemiyorsanız boş bırakmak daha güvenlidir.
+                    </div>
+                </div>
+                 <div class="strategy-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <h3 class="text-xl font-bold mb-2">Pomodoro Tekniği</h3>
+                    <p class="text-slate-600">Dikkatinizi en üst düzeyde tutmak için çalışma seanslarınızı kısa molalarla bölme yöntemi.</p>
+                     <div class="strategy-details hidden mt-4 text-sm text-slate-700 bg-slate-50 p-4 rounded-md">
+                        <strong>Nasıl Uygulanır:</strong> 25 dakika odaklanarak çalışın, 5 dakika mola verin. Bu bir "Pomodoro"dur. Dört Pomodoro sonrası 15-30 dk uzun mola verin. Bu, zihinsel yorgunluğu önler.
+                    </div>
+                </div>
+                 <div class="strategy-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <h3 class="text-xl font-bold mb-2">ALES Köprüsü (TOLC-I için)</h3>
+                    <p class="text-slate-600">TOLC-I'ın Mantık bölümü için Türkiye'deki en iyi hazırlık kaynağı ALES sınavlarıdır.</p>
+                     <div class="strategy-details hidden mt-4 text-sm text-slate-700 bg-slate-50 p-4 rounded-md">
+                        <strong>Strateji:</strong> TOLC-I Mantık bölümü, ALES'in Sayısal ve Sözel Mantık testleriyle büyük benzerlik gösterir. Hazırlık için ALES çıkmış soruları ve kaynakları en etkili araçlardır.
+                    </div>
+                </div>
+                 <div class="strategy-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 cursor-pointer hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <h3 class="text-xl font-bold mb-2">Feynman Tekniği</h3>
+                    <p class="text-slate-600">Bir konuyu gerçekten öğrenip öğrenmediğinizi anlamanın en iyi yolu: Onu basitçe anlatabilmek.</p>
+                     <div class="strategy-details hidden mt-4 text-sm text-slate-700 bg-slate-50 p-4 rounded-md">
+                        <strong>Nasıl Uygulanır:</strong> Öğrendiğiniz bir konuyu, sanki 10 yaşındaki bir çocuğa anlatıyormuş gibi basitçe yazın. Takıldığınız yerler, konuyu tam anlamadığınız noktalardır.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="yol-haritasi">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">İtalya'da Üniversite İçin Adım Adım Yol Haritası</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Hazırlık, sınav, başvuru ve yolculuk... İtalya'daki eğitim hayalinize giden yolda ihtiyacınız olan tüm adımlar burada.</p>
+            </div>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-slate-200 space-y-8">
+                
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-600 border-l-4 border-blue-600 pl-4 mb-4">Faz 1: Stratejik Hazırlık Dönemi</h3>
+                    <div class="space-y-4 ml-2">
+                        <h4 class="font-semibold text-lg">Adım 1: Bölüm ve Üniversite Araştırması</h4>
+                        <p class="text-slate-700">Hangi mühendislik alanında okumak istediğinize karar verin. Politecnico di Milano, Politecnico di Torino gibi önde gelen üniversitelerin İngilizce programlarını, kabul koşullarını (TOLC-I, IELTS/TOEFL) ve müfredatlarını kendi web sitelerinden detaylıca inceleyin.</p>
+                        <h4 class="font-semibold text-lg">Adım 2: Sınav Stratejisi ve Dil Yeterliliği</h4>
+                        <p class="text-slate-700">Hedefiniz mühendislik ise ana sınavınız TOLC-I olacaktır. Hemen IELTS/TOEFL hazırlığına başlayın. Genellikle IELTS 6.0, TOEFL 80 istenir; hedefi 6.5 olarak belirlemek sizi güvenceye alır.</p>
+                        <h4 class="font-semibold text-lg">Adım 3: Bürokratik Ön Hazırlık</h4>
+                        <p class="text-slate-700">Pasaportunuzun geçerlilik süresini kontrol edin, gerekirse yenileyin. Unutmayın, İtalya'ya başvuru için 12 yıllık eğitimi tamamlamış olmanız (lise diploması) yeterlidir.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-green-600 border-l-4 border-green-600 pl-4 mb-4">Faz 2: Sınav Maratonu</h3>
+                    <div class="space-y-4 ml-2">
+                        <h4 class="font-semibold text-lg">Adım 4: TOLC-I Sınavına Sistematik Hazırlık</h4>
+                        <p class="text-slate-700">Bu rehberdeki TOLC-I çalışma programını uygulayın. YKS temeliniz en büyük gücünüz, ancak Mantık bölümü için ALES çıkmış sorularına odaklanmanız kritik. Her bölümün kendi süresi olduğunu unutmadan zaman yönetimi pratiği yapın.</p>
+                        <h4 class="font-semibold text-lg">Adım 5: Sınav Kaydı ve Dil Sınavı</h4>
+                        <p class="text-slate-700">CISIA'nın web sitesinden TOLC-I için uygun bir tarih seçip kaydolun (Nisan/Mayıs ilk deneme için idealdir). Planladığınız dil sınavına girip belgenizi alın.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-purple-600 border-l-4 border-purple-600 pl-4 mb-4">Faz 3: Resmi Başvuru ve Evrak Süreci</h3>
+                    <div class="space-y-4 ml-2">
+                        <h4 class="font-semibold text-lg">Adım 6: Ön Kayıt (Pre-enrollment)</h4>
+                        <p class="text-slate-700">Universitaly portalı üzerinden hedeflediğiniz üniversite ve bölüme ön kayıt başvurusu yapın. Kabul Mektubunuz bu portal üzerinden gelecektir.</p>
+                        <h4 class="font-semibold text-lg">Adım 7: Diploma Denkliği (Dichiarazione di Valore - DoV)</h4>
+                        <p class="text-slate-700">Bu en kritik adımdır. Lise diplomanıza ve transkriptinize Kaymakamlık'tan Apostil mührü alın, ardından bu belgeleri İtalyan Konsolosluğu'nun tanıdığı bir tercümana İtalyanca'ya çevirtin. Bu belgelerle birlikte konsolosluğa başvurarak denklik belgenizi alın. Bu işlem haftalar sürebilir, kabul alır almaz başlayın!</p>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-2xl font-bold text-red-600 border-l-4 border-red-600 pl-4 mb-4">Faz 4: Vize ve İtalya'ya Yolculuk</h3>
+                    <div class="space-y-4 ml-2">
+                        <h4 class="font-semibold text-lg">Adım 8: Ulusal Öğrenci Vizesi (D Tipi) Başvurusu</h4>
+                        <p class="text-slate-700">Kabul mektubu, pasaport, finansal kanıt (bankada yıllık ~6000 Euro), konaklama kanıtı ve sağlık sigortası gibi belgelerle konsolosluğun yetkili vize merkezine (örn: iData) başvurun.</p>
+                        <h4 class="font-semibold text-lg">Adım 9: İtalya'ya Varış ve Son Adımlar</h4>
+                        <p class="text-slate-700">İtalya'ya vardığınızda ilk işleriniz "Codice Fiscale" (vergi numarası) almak ve 8 gün içinde oturma izni (Permesso di Soggiorno) başvurusunu postaneden yapmaktır.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto mt-8">
+                     <h3 class="text-2xl font-bold text-center mb-6">Özet Zaman Çizelgesi</h3>
+                    <table class="w-full text-sm text-left text-slate-600">
+                        <thead class="text-xs text-slate-700 uppercase bg-slate-100">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-l-lg">Zaman Dilimi</th>
+                                <th scope="col" class="px-6 py-3 rounded-r-lg">Görev</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Eylül - Aralık</td><td class="px-6 py-4">Bölüm/Üniversite Araştırması, Dil Sınavı Hazırlığına Başlama, Pasaport İşlemleri.</td></tr>
+                            <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Ocak - Mart</td><td class="px-6 py-4">Yoğun TOLC-I Hazırlığı, ALES Mantık Çalışmaları, Dil Sınavına Giriş.</td></tr>
+                            <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Nisan - Mayıs</td><td class="px-6 py-4">TOLC-I Sınavına Giriş (İlk Hak), Universitaly Ön Kayıt Başvurusu.</td></tr>
+                            <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Haziran - Temmuz</td><td class="px-6 py-4">Gerekirse TOLC-I'a Tekrar Giriş, Kabul Mektubunu Alma, Diploma Denkliği (DoV) İşlemlerine Başlama.</td></tr>
+                            <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Ağustos</td><td class="px-6 py-4">Vize Başvurusu, Konaklama Ayarlamaları, Uçak Biletinin Alınması.</td></tr>
+                            <tr class="bg-slate-50"><td class="px-6 py-4 font-medium">Eylül</td><td class="px-6 py-4">Vizenin Alınması, İtalya'ya Varış, Codice Fiscale ve Oturma İzni Başvuruları.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal for Gemini Concept Explainer -->
+    <div id="concept-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] flex flex-col">
+            <div class="p-4 border-b">
+                <div class="flex justify-between items-start">
+                    <h3 id="modal-title" class="text-xl font-bold text-slate-900">Konu Açıklaması</h3>
+                    <button id="close-modal-btn" class="text-2xl font-bold text-slate-500 hover:text-slate-800">&times;</button>
+                </div>
+            </div>
+            <div id="modal-content" class="p-6 text-slate-700 prose overflow-y-auto">
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-white mt-12 py-6 border-t border-slate-200">
+        <div class="container mx-auto text-center text-slate-500 text-sm">
+            <p>&copy; 2024 İnteraktif Sınav ve İtalya Rehberi. Tüm hakları saklıdır.</p>
+            <p class="mt-1">Bu uygulama, YKS ve TOLC-I hazırlık verileri ile Gemini AI tarafından desteklenmektedir.</p>
+        </div>
+    </footer>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    
+    const curriculumData = {
+        matematik: [
+            { topic: "Temel Kavramlar, Sayı Sistemleri", yks: "Yüksek Öncelik. TYT'nin temelini oluşturur.", tolci: "Yüksek Öncelik. Aritmetik ve Cebir bölümünün başlangıcıdır.", video: "Rehber Matematik", videoLink: "https://www.youtube.com/watch?v=k8q1g4sA2F0&list=PL46pg39bL2dD35JkP6iGtR-iJ_2-8j-eP" },
+            { topic: "Üslü & Köklü Sayılar", yks: "Yüksek Öncelik. TYT ve AYT'de kesin soru gelir.", tolci: "Yüksek Öncelik. Temel cebir becerisi olarak sıkça sorgulanır.", video: "Mert Hoca", videoLink: "https://www.youtube.com/watch?v=TzGgYgSST2E&list=PLgC04-C8e5GGI-4ADtDOJyGH5pT5dY2G_" },
+            { topic: "Fonksiyonlar", yks: "Kritik Öncelik. TYT'de temel, AYT'de ise Limit-Türev-İntegral'in ön koşuludur.", tolci: "Yüksek Öncelik. Fonksiyonlar ve analitik geometri bölümünün temelidir.", video: "Mert Hoca", videoLink: "https://www.youtube.com/watch?v=yrgT4gA_iV8&list=PLgC04-C8e5GGz39cOSD-3RTP-yvvoT4_g" },
+            { topic: "Polinomlar ve 2. Derece Denklemler", yks: "Yüksek Öncelik. AYT'nin önemli konularındandır.", tolci: "Yüksek Öncelik. Cebir bölümünde yer alır, temel bilgi sorgulanır.", video: "Rehber Matematik", videoLink: "https://www.youtube.com/watch?v=F1hA8h2xhmA&list=PL46pg39bL2dDneBGS7wJHIr-AinFissBv" },
+            { topic: "Trigonometri", yks: "Kritik Öncelik. AYT'de en çok soru gelen konulardan biridir.", tolci: "Orta Öncelik. Temel formüller ve birim çember bilgisi yeterlidir.", video: "Mert Hoca", videoLink: "https://www.youtube.com/watch?v=l_tHzttoMww&list=PLgC04-C8e5GEyJ0c7T_5Lw3bC-n38P7_S" },
+            { topic: "Limit ve Türev", yks: "Kritik Öncelik. AYT'nin zirve konularındandır.", tolci: "Düşük Öncelik. Kapsam dışı veya sadece temel kavramsal bilgi.", video: "Tunca Kurt", videoLink: "https://www.youtube.com/watch?v=2Tq2T5D78y8" },
+            { topic: "İntegral", yks: "Kritik Öncelik. AYT'nin son büyük konusudur.", tolci: "Kapsam Dışı.", video: "Eyüp B. Matematik", videoLink: "https://www.youtube.com/watch?v=bO_sJ02a8_8&list=PL31V673h6rP6xL-c0BSSuXn_p6-Xy264J" },
+            { topic: "İstatistik ve Olasılık", yks: "Orta Öncelik. TYT'de P-K-O olarak çıkar.", tolci: "Yüksek Öncelik. Ortalama, varyans gibi kavramlar da sorulur.", video: "Bıyıklı Matematik", videoLink: "https://www.youtube.com/watch?v=LqLSn_teGqA&list=PLO627BW0NOkl-c5A_4Ewnj-O8eZ443aQ-" },
+        ],
+        fizik: [
+            { topic: "Kuvvet ve Hareket (Mekanik)", yks: "Kritik Öncelik. TYT ve AYT Fiziğin omurgasıdır.", tolci: "Yüksek Öncelik. Mekanik bölümünün temelini oluşturur, kavramsal sorular ağırlıklıdır.", video: "VIP Fizik", videoLink: "https://www.youtube.com/watch?v=eBakaT8UNS0&list=PLPeyx4YwYjKz5BweP5mYk5lF-7ZTpBwca" },
+            { topic: "İş, Güç, Enerji", yks: "Yüksek Öncelik. Mekaniğin devamı niteliğindedir.", tolci: "Yüksek Öncelik. Temel formül uygulamaları ve enerji korunumu sorgulanır.", video: "Ertan Sinan Şahin", videoLink: "https://www.youtube.com/watch?v=t_u_bE1b5mc" },
+            { topic: "Elektrik ve Manyetizma", yks: "Kritik Öncelik. TYT ve AYT'de geniş bir yer kaplar.", tolci: "Yüksek Öncelik. Niteliksel bilgi ve temel formüller önemlidir.", video: "Fizikle Barış", videoLink: "https://www.youtube.com/watch?v=R2_2HDF_jR4&list=PLPeyx4YwYjKy3Nqf5hT7d5Wb51s-Vn-Yq" },
+            { topic: "Dalgalar ve Optik", yks: "Yüksek Öncelik. TYT ve AYT'de kesin soru gelir.", tolci: "Orta Öncelik. Temel yansıma, kırılma ve mercek olayları sorgulanır.", video: "VIP Fizik", videoLink: "https://www.youtube.com/watch?v=bWj4fQU2m-I&list=PLPeyx4YwYjKzuwzFj_2m-R38LpL2v1Lq7" },
+            { topic: "Termodinamik (Isı, Sıcaklık)", yks: "Orta Öncelik. Genellikle TYT'de temel kavramlar sorulur.", tolci: "Orta Öncelik. Termodinamiğin temel yasaları ve kavramları önemlidir.", video: "Ertan Sinan Şahin", videoLink: "https://www.youtube.com/watch?v=zI4Rj6l2o_g" },
+            { topic: "Modern Fizik", yks: "Orta Öncelik. AYT'nin son konularıdır.", tolci: "Düşük Öncelik / Kapsam Dışı.", video: "Fizikle Barış", videoLink: "https://www.youtube.com/watch?v=8lB5kGVCU3A&list=PLPeyx4YwYjKx0qH-4wvq-5FHzxTt-4A1B" },
+            { topic: "Çembersel Hareket", yks: "Yüksek Öncelik. AYT'nin önemli bir parçasıdır.", tolci: "Düşük Öncelik. Sadece en temel kavramlar.", video: "VIP Fizik", videoLink: "https://www.youtube.com/watch?v=tW227K_xM2I&list=PLPeyx4YwYjKyx_0WzC1P63eD1wGNEtX9o" },
+        ],
+        kimya: [
+            { topic: "Atom ve Periyodik Sistem", yks: "Kritik Öncelik. TYT ve AYT Kimyanın temelidir.", tolci: "Yüksek Öncelik. Maddenin yapısı bölümünün temelidir.", video: "Görkem Şahin", videoLink: "https://www.youtube.com/watch?v=oE5xL6h_I_A&list=PLatB4fTAy0oGzjb2vpy_fQy2Ea2A77P7a" },
+            { topic: "Kimyasal Türler Arası Etkileşimler", yks: "Yüksek Öncelik. Bağlar ve molekül yapıları önemlidir.", tolci: "Yüksek Öncelik. Kimyasal bağlar ve temel Lewis yapıları sorgulanır.", video: "Kimya Adası", videoLink: "https://www.youtube.com/watch?v=o1o_y-a2LgM" },
+            { topic: "Mol Kavramı ve Hesaplamalar", yks: "Kritik Öncelik. TYT ve AYT'deki tüm sayısal soruların temelidir.", tolci: "Yüksek Öncelik. Stokiyometri soruları için zorunludur.", video: "Görkem Şahin", videoLink: "https://www.youtube.com/watch?v=oG0gGg5E2hM&list=PLatB4fTAy0oFvXw3tJtK3nFkZzW2y_fC8" },
+            { topic: "Asitler, Bazlar ve Tuzlar", yks: "Yüksek Öncelik. TYT'de kesin, AYT'de Denge konusu içinde yer alır.", tolci: "Orta Öncelik. Temel asit-baz tanımları ve pH kavramı önemlidir.", video: "Bizim Kimyamız", videoLink: "https://www.youtube.com/watch?v=2Tz8dZ4S-2k&list=PL-r5m3o2A-FFcYZUuYm50JpC9nAYzDkK7" },
+            { topic: "Kimyasal Denge", yks: "Yüksek Öncelik. AYT'nin önemli ve zor konularındandır.", tolci: "Düşük Öncelik. Sadece temel denge prensibi (Le Chatelier) sorgulanabilir.", video: "Görkem Şahin", videoLink: "https://www.youtube.com/watch?v=XhS-Vq4w-fE&list=PLatB4fTAy0oFw-aYIHpWnB9Xwz4GbeD_P" },
+            { topic: "Organik Kimya", yks: "Kritik Öncelik. AYT'de büyük bir yer kaplar.", tolci: "Orta Öncelik. Sadece temel alkan, alken, alkin adlandırmaları önemlidir.", video: "Kimya Adası", videoLink: "https://www.youtube.com/watch?v=nF2y6_a-nFw&list=PL0h0e0i5aWFBy2A9iNo5z9-M2FzcE6XkU" },
+        ],
+    };
+
+    const yksScheduleData = [
+        { week: 1, content: "<b>Pazartesi:</b> Mat (Temel Kavramlar), Fiz (Giriş) <br><b>Salı:</b> Trk (Sözcükte Anlam), Mat (Çözüm) <br><b>Çarşamba:</b> Kim (Kimya Bilimi), Trk (Çözüm) <br><b>Perşembe:</b> Mat (Sayı Basamakları), Kim (Çözüm) <br><b>Cuma:</b> Bio (Canlıların Ortak Öz.), Mat (Çözüm) <br><b>Cumartesi:</b> Fiz (Madde ve Öz.), Bio (Çözüm)" },
+        { week: 2, content: "<b>Pazartesi:</b> Mat (Bölme), Fiz (Çözüm) <br><b>Salı:</b> Trk (Cümlede Anlam), Mat (Çözüm) <br><b>Çarşamba:</b> Kim (Atom), Trk (Çözüm) <br><b>Perşembe:</b> Mat (Rasyonel Sayılar), Kim (Çözüm) <br><b>Cuma:</b> Bio (Temel Bileşenler), Mat (Çözüm) <br><b>Cumartesi:</b> Fiz (Kuvvet ve Hareket), Bio (Çözüm)" },
+        { week: 3, content: "<b>Pazartesi:</b> Mat (Basit Eşitsizlikler), Fiz (Çözüm) <br><b>Salı:</b> Trk (Paragraf-1), Mat (Çözüm) <br><b>Çarşamba:</b> AYT Fiz (Vektörler), Trk (Çözüm) <br><b>Perşembe:</b> AYT Mat (Fonksiyonlar-1), AYT Fiz (Çözüm) <br><b>Cuma:</b> AYT Kim (Modern Atom T.), AYT Mat (Çözüm) <br><b>Cumartesi:</b> AYT Bio (Sinir Sistemi), AYT Kim (Çözüm)" },
+        { week: 4, content: "<b>Tekrar Haftası:</b> Bu hafta yeni konu yok. <br><b>Pazartesi-Perşembe:</b> İlk 3 haftanın konularının genel tekrarı ve karma soru çözümleri. <br><b>Cuma:</b> Tam TYT Denemesi ve Hata Analizi. <br><b>Cumartesi:</b> Alan Denemesi (AYT) ve Hata Analizi." },
+    ];
+
+    const tolciScheduleData = [
+        { week: 1, content: "<b>KC:</b> TYT Mat (Temel Kavramlar, Sayı Basamakları). <br><b>SÇ:</b> ALES Sayısal Mantık (Sayı Dizileri, Şifreleme)." },
+        { week: 2, content: "<b>KC:</b> TYT Mat (Bölme, Rasyonel Sayılar), Fizik (Giriş). <br><b>SÇ:</b> ALES Sözel Mantık (Tablo Kurma)." },
+        { week: 3, content: "<b>KC:</b> TYT Mat (Eşitsizlikler, Mutlak Değer), Kimya (Giriş). <br><b>SÇ:</b> Metin Anlama (Bilimsel metinler)." },
+        { week: 4, content: "<b>KC:</b> TYT Mat (Üslü, Köklü), Fizik (Basınç). <br><b>SÇ:</b> Karma Mantık Soruları, 1. Ay tekrarı." },
+        { week: 5, content: "<b>KC:</b> AYT Mat (Fonksiyonlar, Polinomlar), Fizik (Vektörler). <br><b>SÇ:</b> 1. Ay konularından karma tekrar." },
+        { week: 6, content: "<b>KC:</b> AYT Mat (2. Derece Denklemler, Parabol), Fizik (Newton, Atışlar). <br><b>SÇ:</b> Mantık ve Metin Anlama karma testi." },
+        { week: 7, content: "<b>KC:</b> AYT Mat (Eşitsizlikler, Trigonometri-1), Fizik (İş-Güç-Enerji). <br><b>SÇ:</b> Karma tekrar." },
+        { week: 8, content: "<b>KC:</b> AYT Mat (Trigonometri-2), Fizik (Tork, Denge). <br><b>SÇ:</b> Ay sonu tekrar ve deneme." },
+        { week: 9, content: "<b>KC:</b> AYT Kimya (Modern Atom, Gazlar), Geometri (Üçgenler). <br><b>SÇ:</b> Metin Anlama stratejileri." },
+        { week: 10, content: "<b>KC:</b> AYT Kimya (Çözeltiler, Enerji), Geometri (Dörtgenler). <br><b>SÇ:</b> ALES Mantık (Karmaşık problemler)." },
+        { week: 11, content: "<b>KC:</b> AYT Kimya (Hız, Denge), Geometri (Çember). <br><b>SÇ:</b> Fizik (Elektrik tekrar)." },
+        { week: 12, content: "<b>KC:</b> AYT Kimya (Elektrokimya, Organik Giriş), Geometri (Analitik). <br><b>SÇ:</b> Ay sonu tekrar ve deneme." },
+        { week: 13, content: "<b>KC:</b> AYT Mat (Logaritma), Fizik (Dalgalar, Optik). <br><b>SÇ:</b> Tüm derslerden karma soru bankası." },
+        { week: 14, content: "<b>KC:</b> AYT Mat (Diziler), Kimya (Organik genel bakış). <br><b>SÇ:</b> Karma soru ve hız testleri." },
+        { week: 15, content: "<b>KC:</b> AYT Mat (Limit/Türev temel), Fizik (Çembersel/Harmonik temel). <br><b>SÇ:</b> Bölüm denemeleri." },
+        { week: 16, content: "<b>KC:</b> AYT Mat (İntegral temel), Fizik (Modern Fizik temel). <br><b>SÇ:</b> Genel tekrar ve tam deneme." },
+    ];
+
+
+    const subjectSelect = document.getElementById('subject-select');
+    const curriculumTableBody = document.getElementById('curriculum-table-body');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function populateCurriculumTable(subject) {
+        curriculumTableBody.innerHTML = '';
+        const data = curriculumData[subject];
+        data.forEach(item => {
+            const row = document.createElement('tr');
+            row.className = 'bg-white border-b';
+            row.innerHTML = `
+                <td class="px-6 py-4 font-medium text-slate-900">${item.topic}</td>
+                <td class="px-6 py-4">${item.yks}</td>
+                <td class="px-6 py-4">${item.tolci}</td>
+                <td class="px-6 py-4">
+                    <a href="${item.videoLink}" target="_blank" class="text-blue-600 hover:underline font-semibold" title="YouTube'da izle">${item.video}</a>
+                </td>
+                <td class="px-6 py-4 text-center">
+                    <button class="explain-btn text-2xl" data-topic="${item.topic}" title="Bu konuyu yapay zekaya açıkla">&#10024;</button>
+                </td>
+            `;
+            curriculumTableBody.appendChild(row);
+        });
+        document.querySelectorAll('.explain-btn').forEach(button => {
+            button.addEventListener('click', handleExplainClick);
+        });
+    }
+
+    subjectSelect.addEventListener('change', (e) => populateCurriculumTable(e.target.value));
+    populateCurriculumTable('matematik');
+
+    const observer = new IntersectionObserver((entries) => {
+        let activeFound = false;
+        entries.forEach(entry => {
+            if (entry.isIntersecting && entry.intersectionRatio > 0.5 && !activeFound) {
+                 const id = entry.target.getAttribute('id');
+                 document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                 });
+                 activeFound = true;
+            }
+        });
+    }, { threshold: 0.5 });
+
+    sections.forEach(section => observer.observe(section));
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            
+            if (targetSection) {
+                 window.scrollTo({
+                    top: targetSection.offsetTop - 64, // Header height
+                    behavior: 'smooth'
+                });
+            }
+
+            if(!mobileMenu.classList.contains('hidden')){
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+
+    mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    const timeChartCtx = document.getElementById('timePerQuestionChart').getContext('2d');
+    new Chart(timeChartCtx, {
+        type: 'bar',
+        data: {
+            labels: ['YKS-TYT', 'YKS-AYT (Sayısal)', 'TOLC-I'],
+            datasets: [{
+                label: 'Soru Başına Ortalama Süre (Saniye)',
+                data: [82.5, 67.5, 132],
+                backgroundColor: ['rgba(59, 130, 246, 0.6)', 'rgba(34, 197, 94, 0.6)', 'rgba(234, 179, 8, 0.6)'],
+                borderColor: ['rgba(59, 130, 246, 1)', 'rgba(34, 197, 94, 1)', 'rgba(234, 179, 8, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Saniye' } } },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw} saniye`}}}
+        }
+    });
+
+    const planTabs = document.querySelectorAll('.plan-tab');
+    const planContents = document.querySelectorAll('.plan-content');
+    planTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            planTabs.forEach(t => {
+                t.classList.remove('text-blue-600', 'border-blue-600');
+                t.classList.add('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300', 'border-transparent');
+            });
+            tab.classList.add('text-blue-600', 'border-blue-600');
+            tab.classList.remove('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300', 'border-transparent');
+            const target = tab.getAttribute('data-target');
+            planContents.forEach(c => c.id === target ? c.classList.remove('hidden') : c.classList.add('hidden'));
+        });
+    });
+
+    const yksWeekSlider = document.getElementById('yks-week-slider');
+    const yksWeekLabel = document.getElementById('yks-week-label');
+    const yksScheduleContainer = document.getElementById('yks-schedule-container');
+    function updateYksSchedule(week) {
+        yksWeekLabel.textContent = week;
+        const weekData = yksScheduleData.find(w => w.week == week);
+        yksScheduleContainer.innerHTML = `<div class="p-4 bg-slate-50 rounded-md text-sm"><p>${weekData.content}</p></div>`;
+    }
+    yksWeekSlider.addEventListener('input', (e) => updateYksSchedule(e.target.value));
+    updateYksSchedule(1);
+
+    const tolciWeekSlider = document.getElementById('tolci-week-slider');
+    const tolciWeekLabel = document.getElementById('tolci-week-label');
+    const tolciScheduleContainer = document.getElementById('tolci-schedule-container');
+    function updateTolciSchedule(week) {
+        tolciWeekLabel.textContent = week;
+        const weekData = tolciScheduleData.find(w => w.week == week);
+        tolciScheduleContainer.innerHTML = `<div class="p-4 bg-slate-50 rounded-md text-sm"><p>${weekData.content}</p></div>`;
+    }
+    tolciWeekSlider.addEventListener('input', (e) => updateTolciSchedule(e.target.value));
+    updateTolciSchedule(1);
+
+    const strategyCards = document.querySelectorAll('.strategy-card');
+    strategyCards.forEach(card => card.addEventListener('click', () => card.querySelector('.strategy-details').classList.toggle('hidden')));
+
+    // Gemini API Integration
+    const apiKey = "";
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+    const generatePlanBtn = document.getElementById('generate-plan-btn');
+    const planResultContainer = document.getElementById('plan-result-container');
+    const conceptModal = document.getElementById('concept-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+
+    async function callGemini(prompt) {
+        const payload = { contents: [{ parts: [{ text: prompt }] }] };
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            if (!response.ok) {
+                const errorBody = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}, body: ${errorBody}`);
+            }
+            const data = await response.json();
+            if (data.candidates && data.candidates.length > 0) {
+                 return data.candidates[0].content.parts[0].text;
+            } else {
+                 return "Yapay zekadan geçerli bir yanıt alınamadı. Lütfen tekrar deneyin.";
+            }
+        } catch (error) {
+            console.error("Gemini API call failed:", error);
+            return "Yapay zeka ile iletişim kurulamadı. İnternet bağlantınızı kontrol edin veya daha sonra tekrar deneyin.";
+        }
+    }
+    
+    function showLoading(container) {
+        container.innerHTML = '<div class="flex justify-center items-center p-6"><div class="loader"></div></div>';
+    }
+
+    generatePlanBtn.addEventListener('click', async () => {
+        const weakSubjects = document.getElementById('weak-subjects').value;
+        const strongSubjects = document.getElementById('strong-subjects').value;
+        const examType = document.getElementById('exam-type').value;
+
+        if (!weakSubjects) {
+            planResultContainer.innerHTML = '<p class="text-red-500 font-semibold text-center">Lütfen zayıf olduğunuz en az bir konu belirtin.</p>';
+            return;
+        }
+        
+        showLoading(planResultContainer);
+
+        const prompt = `Bir öğrenci için 1 haftalık detaylı ve dengeli bir çalışma planı oluştur. Öğrencinin hedefi ${examType} sınavı.
+        - Zayıf olduğu ve ağırlık verilmesi gereken konular (Konu Çalışma + Soru Çözümü): ${weakSubjects}.
+        - Güçlü olduğu ve tekrar/soru çözümü odaklı ilerlenmesi gereken konular: ${strongSubjects}.
+        - Plan, Pazartesi'den Cumartesi'ye kadar her gün için en az iki çalışma bloğu içermelidir. Pazar günü dinlenme ve haftalık tekrar günüdür.
+        - Her çalışma bloğu için aktivite türünü (örn: Konu Çalışma, Soru Çözümü, Tekrar, Deneme Analizi) ve konuyu belirt.
+        - Çıktıyı başlıklar (günler için) ve listeler (aktiviteler için) kullanarak profesyonel ve okunaklı bir şekilde biçimlendir. Yanıt sadece Türkçe olmalıdır.`;
+
+        const result = await callGemini(prompt);
+        let htmlResult = result
+            .replace(/###\s*(.*)/g, '<h3>$1</h3>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/-\s(.*?)\n/g, '<li>$1</li>')
+            .replace(/\*\s(.*?)\n/g, '<li>$1</li>')
+            .replace(/(\r\n|\n|\r)/g, '<br>')
+            .replace(/<br><li>/g, '<li>')
+            .replace(/<\/li><br>/g, '</li>');
+
+        planResultContainer.innerHTML = `<div class="p-4 bg-slate-50 rounded-md prose max-w-none">${htmlResult}</div>`;
+    });
+
+    async function handleExplainClick(event) {
+        const topic = event.target.dataset.topic;
+        modalTitle.textContent = `${topic} Konusunun Açıklaması`;
+        conceptModal.classList.remove('hidden');
+        showLoading(modalContent);
+        
+        const prompt = `Bir lise öğrencisine "${topic}" konusunu Feynman tekniği kullanarak, basit bir dille ve günlük hayattan bir analoji yardımıyla açıkla. Açıklama kısa, öz ve kolay anlaşılır olmalı. Teknik terimleri en aza indir. Yanıt sadece Türkçe olmalıdır.`;
+        
+        const result = await callGemini(prompt);
+        modalContent.innerHTML = `<p>${result.replace(/(\r\n|\n|\r)/g, '<br>')}</p>`;
+    }
+    
+    closeModalBtn.addEventListener('click', () => conceptModal.classList.add('hidden'));
+    conceptModal.addEventListener('click', (e) => {
+        if (e.target === conceptModal) {
+            conceptModal.classList.add('hidden');
+        }
+    });
+});
+</script>
+
+</body>
+</html>
