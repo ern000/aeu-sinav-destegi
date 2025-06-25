@@ -444,6 +444,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     async function callGemini(prompt) {
+        // This function no longer needs a hardcoded API key.
+        // The platform will automatically handle authentication.
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
         const payload = { contents: [{ parts: [{ text: prompt }] }] };
 
@@ -454,20 +456,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 body: JSON.stringify(payload)
             });
 
+            const data = await response.json();
+
             if (!response.ok) {
-                let errorData;
-                try {
-                    errorData = await response.json();
-                } catch(e) {
-                    errorData = { error: { message: response.statusText } };
-                }
-                const errorMessage = errorData?.error?.message ?? `Sunucu hatası: ${response.status}.`;
+                const errorMessage = data?.error?.message ?? `Sunucu hatası: ${response.status}. Lütfen daha sonra tekrar deneyin veya API anahtarınızı kontrol edin.`;
                 throw new Error(errorMessage);
             }
 
-            const data = await response.json();
             if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
                 return data.candidates[0].content.parts[0].text;
+            } else if (data.promptFeedback?.blockReason) {
+                throw new Error(`API isteği engellendi: ${data.promptFeedback.blockReason}`);
             } else {
                 throw new Error("API'den geçerli veya beklenen formatta bir yanıt alınamadı.");
             }
