@@ -17,8 +17,8 @@
         .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
         @media (min-width: 768px) { .chart-container { height: 400px; } }
         section {
-            padding-top: 80px;
-            margin-top: -64px;
+            padding-top: 80px; /* Header height + extra space */
+            margin-top: -64px; /* Negative margin to offset anchor positioning */
             min-height: 90vh;
         }
         .loader {
@@ -115,7 +115,8 @@
                 </div>
             </div>
         </section>
-                <section id="mufredat">
+
+        <section id="mufredat">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Akademik Hazırlık</h2>
                 <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Aşağıdan bir ders seçin ve öğrenmek istediğiniz konunun kartına tıklayarak yapay zeka destekli kaynaklara ulaşın!</p>
@@ -203,301 +204,256 @@
                 </div>
              </div>
         </section>
-                <section id="planlar">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Sınav Takvimleri & Kişisel Planlar</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Türkiye ve İtalya'daki sınav takvimini ve kendi haftalık/aylık planınızı takip edin.</p>
+        
+        <section id="planlar">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">Çalışma Planları ve Stratejiler</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Örnek planları inceleyin, size özel plan oluşturun veya sınav tekniklerinde ustalaşın.</p>
             </div>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h3 class="text-2xl font-bold mb-4 text-blue-600">YKS Takvimi</h3>
-                    <ul id="yks-schedule-list" class="list-disc pl-5 space-y-2 text-slate-700"></ul>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                 <div class="mb-4 border-b border-slate-200">
+                    <nav class="flex flex-wrap -mb-px" id="plan-tabs">
+                        <button data-target="gemini-plan" class="plan-tab whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm text-blue-600 border-blue-600">
+                            ✨ Kişisel Plan Oluştur
+                        </button>
+                        <button data-target="yks-plan" class="plan-tab whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300 border-transparent">
+                            YKS Örnek Planı
+                        </button>
+                        <button data-target="tolci-plan" class="plan-tab whitespace-nowrap py-4 px-3 border-b-2 font-medium text-sm text-slate-500 hover:text-slate-700 hover:border-slate-300 border-transparent">
+                            TOLC-I Örnek Planı
+                        </button>
+                    </nav>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h3 class="text-2xl font-bold mb-4 text-green-600">TOLC-I Takvimi</h3>
-                    <ul id="tolci-schedule-list" class="list-disc pl-5 space-y-2 text-slate-700"></ul>
+                <div id="gemini-plan" class="plan-content">
+                    <h3 class="text-xl font-bold mb-2">✨ Kişiselleştirilmiş Haftalık Çalışma Planı Oluşturucu</h3>
+                    <p class="mb-6 text-slate-600">Zayıf ve güçlü olduğunuz konuları girin, yapay zeka size özel, dengeli ve verimli bir haftalık çalışma programı oluştursun.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="weak-subjects" class="block text-sm font-medium text-slate-700">Zayıf Olduğunuz Konular (Virgülle ayırın)</label>
+                            <input type="text" id="weak-subjects" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Örn: Trigonometri, Organik Kimya">
+                        </div>
+                        <div>
+                            <label for="strong-subjects" class="block text-sm font-medium text-slate-700">Güçlü Olduğunuz Konular (Virgülle ayırın)</label>
+                            <input type="text" id="strong-subjects" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm" placeholder="Örn: Temel Kavramlar, Mekanik">
+                        </div>
+                    </div>
+                     <div class="mb-4">
+                        <label for="exam-type" class="block text-sm font-medium text-slate-700">Hedef Sınav</label>
+                        <select id="exam-type" class="mt-1 block w-full rounded-md border-slate-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
+                            <option>YKS (TYT ve AYT)</option>
+                            <option>TOLC-I</option>
+                        </select>
+                    </div>
+                    <button id="generate-plan-btn" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center">
+                        <span class="mr-2">✨</span> Planımı Oluştur
+                    </button>
+                    <div id="plan-result-container" class="mt-6"></div>
+                </div>
+                <div id="yks-plan" class="plan-content hidden">
+                    <h3 class="text-xl font-bold mb-2">YKS Örnek Metodolojisi: "Çalış-Çöz-Sentezle" (3S)</h3>
+                    <p class="mb-6 text-slate-600">Bu döngü, öğrenmeyi kalıcı hale getirmeyi hedefler. Günlük çalışma blokları bu üç aşama etrafında şekillenir.</p>
+                    <div class="space-y-2 mb-6">
+                        <label for="yks-week-slider" class="font-semibold">Örnek Hafta Seçin: <span id="yks-week-label" class="font-bold text-blue-600">1</span>/4</label>
+                        <input id="yks-week-slider" type="range" min="1" max="4" value="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div id="yks-schedule-container" class="overflow-x-auto"></div>
+                </div>
+                <div id="tolci-plan" class="plan-content hidden">
+                    <h3 class="text-xl font-bold mb-2">TOLC-I Örnek Metodolojisi: "Günlük Antrenman"</h3>
+                    <p class="mb-6 text-slate-600">Fiziksel bir antrenman gibi tasarlanan bu yapı, zihni aşamalı olarak hazırlar.</p>
+                    <div class="space-y-2 mb-6">
+                        <label for="tolci-week-slider" class="font-semibold">Örnek Hafta Seçin: <span id="tolci-week-label" class="font-bold text-green-600">1</span>/16</label>
+                        <input id="tolci-week-slider" type="range" min="1" max="16" value="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                    </div>
+                    <div id="tolci-schedule-container" class="overflow-x-auto"></div>
                 </div>
             </div>
-            <div class="bg-white p-6 mt-10 rounded-lg shadow-sm border border-slate-200">
-                <h3 class="text-2xl font-bold mb-4 text-center text-slate-900">Kişisel Haftalık & Aylık Planlayıcı</h3>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="font-semibold text-lg text-blue-700 mb-2">Haftalık Hedefler</h4>
-                        <textarea id="weekly-goals" class="w-full p-2 border border-slate-300 rounded-md mb-2" rows="4" placeholder="Bu hafta neler başarmak istiyorsun?"></textarea>
-                        <button id="save-weekly-goals" class="bg-blue-500 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-600 w-full">Kaydet</button>
-                        <div id="weekly-goals-list" class="mt-2"></div>
-                    </div>
-                    <div>
-                        <h4 class="font-semibold text-lg text-green-700 mb-2">Aylık Hedefler</h4>
-                        <textarea id="monthly-goals" class="w-full p-2 border border-slate-300 rounded-md mb-2" rows="4" placeholder="Bu ay neleri başarmak istiyorsun?"></textarea>
-                        <button id="save-monthly-goals" class="bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 w-full">Kaydet</button>
-                        <div id="monthly-goals-list" class="mt-2"></div>
-                    </div>
+            <div class="mt-8 bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                <h3 class="text-2xl font-bold text-cyan-600 border-l-4 border-cyan-600 pl-4 mb-4">✨ AI Hata Analiz Asistanı</h3>
+                <p class="text-cyan-800 text-sm mt-1 mb-3">Yanlış yaptığın bir soruyu ve cevabını gir, yapay zeka hatanın kök nedenini bulsun ve sana özel tavsiye versin.</p>
+                <div class="space-y-3">
+                    <input type="text" id="error-topic" class="w-full text-sm p-2 rounded-md border-slate-300 shadow-sm" placeholder="Sorunun Konusu (örn: Üslü Sayılar)">
+                    <textarea id="error-question" class="w-full text-sm p-2 rounded-md border-slate-300 shadow-sm" rows="3" placeholder="Yanlış yaptığın soruyu buraya yaz..."></textarea>
+                    <input type="text" id="error-answer" class="w-full text-sm p-2 rounded-md border-slate-300 shadow-sm" placeholder="Verdiğin yanlış cevap...">
                 </div>
+                <button id="analyze-error-btn" class="w-full mt-3 bg-cyan-600 text-white font-bold py-2 px-4 rounded-md hover:bg-cyan-700 transition-colors">Hatamı Analiz Et</button>
+                <div id="error-analysis-container" class="mt-4"></div>
             </div>
         </section>
 
         <section id="yol-haritasi">
             <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">İtalya Başvuru Portalı & Yol Haritası</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">İtalya'da üniversiteye başvuru sürecini adım adım keşfedin ve akıllı rehberden destek alın.</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">İtalya'da Üniversite İçin Adım Adım Yol Haritası</h2>
+                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Hazırlık, sınav, başvuru ve yolculuk... İtalya'daki eğitim hayalinize giden yolda ihtiyacınız olan tüm adımlar burada.</p>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 markdown-content">
-                <h3>Başvuru Süreci Adımları</h3>
-                <ul>
-                    <li>Başvuru yapılacak üniversite ve programı seçin.</li>
-                    <li>Gerekli belgeleri ve başvuru koşullarını araştırın.</li>
-                    <li>Çevrimiçi başvuru portalına kaydolun.</li>
-                    <li>Sınav ve dil yeterlilik belgelerini hazırlayın.</li>
-                    <li>Başvurunuzu tamamlayın ve takibini yapın.</li>
-                </ul>
-                <h4 class="mt-6">AI Destekli Akıllı Rehber</h4>
-                <div class="space-y-3">
-                    <input type="text" id="italy-question" class="w-full p-2 border border-slate-300 rounded-md" placeholder="Başvuru süreciyle ilgili merak ettiğinizi yazın...">
-                    <button id="ask-italy-ai-btn" class="w-full bg-indigo-500 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-600">Soruyu Sor</button>
-                    <div id="italy-ai-answer" class="mt-3"></div>
-                </div>
-            </div>
-        </section>
-
-        <section id="kelime-kartlari">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900">İngilizce & İtalyanca Kelime Kartları</h2>
-                <p class="mt-4 text-lg text-slate-600 max-w-3xl mx-auto">Her seviyeye uygun kelimelerle kelime bilginizi geliştirin. Hafıza için üstüne tıklayın!</p>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h3 class="text-2xl font-bold mb-4 text-rose-600">İngilizce Kelimeler</h3>
-                    <div>
-                        <label for="english-level-select" class="font-semibold">Seviye Seçin:</label>
-                        <select id="english-level-select" class="w-full p-2 border border-slate-300 rounded-md mb-4">
-                            <option value="A1">A1</option>
-                            <option value="A2">A2</option>
-                            <option value="B1">B1</option>
-                            <option value="B2">B2</option>
-                        </select>
-                        <div id="english-vocab-list" class="flex flex-wrap gap-2"></div>
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-sm border border-slate-200 space-y-8">
+                <div>
+                    <h3 class="text-2xl font-bold text-blue-600 border-l-4 border-blue-600 pl-4 mb-4">Faz 1: Stratejik Hazırlık Dönemi</h3>
+                    <div class="space-y-4 ml-2">
+                        <h4 class="font-semibold text-lg">Adım 1: Bölüm ve Üniversite Araştırması</h4>
+                        <p class="text-slate-700">Hangi mühendislik alanında okumak istediğinize karar verin. Politecnico di Milano, Politecnico di Torino gibi önde gelen üniversitelerin İngilizce programlarını, kabul koşullarını (TOLC-I, IELTS/TOEFL) ve müfredatlarını kendi web sitelerinden detaylıca inceleyin.</p>
+                        <h4 class="font-semibold text-lg">Adım 2: Sınav Stratejisi ve Dil Yeterliliği</h4>
+                        <p class="text-slate-700">Hedefiniz mühendislik ise ana sınavınız TOLC-I olacaktır. Hemen IELTS/TOEFL hazırlığına başlayın. Genellikle IELTS 6.0, TOEFL 80 istenir; hedefi 6.5 olarak belirlemek sizi güvenceye alır.</p>
+                        <h4 class="font-semibold text-lg">Adım 3: Bürokratik Ön Hazırlık</h4>
+                        <p class="text-slate-700">Pasaportunuzun geçerlilik süresini kontrol edin, gerekirse yenileyin. Unutmayın, İtalya'ya başvuru için 12 yıllık eğitimi tamamlamış olmanız (lise diploması) yeterlidir.</p>
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                    <h3 class="text-2xl font-bold mb-4 text-emerald-600">İtalyanca Kelimeler</h3>
-                    <div>
-                        <label for="italian-level-select" class="font-semibold">Seviye Seçin:</label>
-                        <select id="italian-level-select" class="w-full p-2 border border-slate-300 rounded-md mb-4">
-                            <option value="A1">A1</option>
-                            <option value="A2">A2</option>
-                            <option value="B1">B1</option>
-                            <option value="B2">B2</option>
-                        </select>
-                        <div id="italian-vocab-list" class="flex flex-wrap gap-2"></div>
+                <div>
+                    <h3 class="text-2xl font-bold text-green-600 border-l-4 border-green-600 pl-4 mb-4">Faz 2: Sınav Maratonu</h3>
+                    <div class="space-y-4 ml-2">
+                        <h4 class="font-semibold text-lg">Adım 4: TOLC-I Sınavına Sistematik Hazırlık</h4>
+                        <p class="text-slate-700">Bu rehberdeki TOLC-I çalışma programını uygulayın. YKS temeliniz en büyük gücünüz, ancak Mantık bölümü için ALES çıkmış sorularına odaklanmanız kritik. Her bölümün kendi süresi olduğunu unutmadan zaman yönetimi pratiği yapın.</p>
+                        <h4 class="font-semibold text-lg">Adım 5: Sınav Kaydı ve Dil Sınavı</h4>
+                        <p class="text-slate-700">CISIA'nın web sitesinden TOLC-I için uygun bir tarih seçip kaydolun (Nisan/Mayıs ilk deneme için idealdir). Planladığınız dil sınavına girip belgenizi alın.</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-purple-600 border-l-4 border-purple-600 pl-4 mb-4">Faz 3: Resmi Başvuru ve Evrak Süreci</h3>
+                    <div class="space-y-4 ml-2">
+                        <h4 class="font-semibold text-lg">Adım 6: Ön Kayıt (Pre-enrollment)</h4>
+                        <p class="text-slate-700">Universitaly portalı üzerinden hedeflediğiniz üniversite ve bölüme ön kayıt başvurusu yapın. Kabul Mektubunuz bu portal üzerinden gelecektir.</p>
+                        <h4 class="font-semibold text-lg">Adım 7: Diploma Denkliği (Dichiarazione di Valore - DoV)</h4>
+                        <p class="text-slate-700">Bu en kritik adımdır. Lise diplomanıza ve transkriptinize Kaymakamlık'tan Apostil mührü alın, ardından bu belgeleri İtalyan Konsolosluğu'nun tanıdığı bir tercümana İtalyanca'ya çevirtin. Bu belgelerle birlikte konsolosluğa başvurarak denklik belgenizi alın. Bu işlem haftalar sürebilir, kabul alır almaz başlayın!</p>
+                        <div class="mt-6 bg-indigo-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-lg text-indigo-800">✨ AI Destekli Motivasyon Mektubu Asistanı</h4>
+                            <p class="text-indigo-700 text-sm mt-1 mb-3">Başvurunuzun en önemli parçası olan motivasyon mektubunuz için profesyonel bir taslak oluşturun.</p>
+                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+                                 <input type="text" id="letter-uni" class="w-full text-sm p-2 rounded-md border-slate-300 shadow-sm" placeholder="Hedef Üniversite (örn: Politecnico di Milano)">
+                                 <input type="text" id="letter-dept" class="w-full text-sm p-2 rounded-md border-slate-300 shadow-sm" placeholder="Hedef Bölüm (örn: Computer Engineering)">
+                             </div>
+                            <textarea id="letter-info" class="w-full text-sm p-2 rounded-md border-slate-300 shadow-sm" rows="3" placeholder="Neden bu bölümü istiyorsunuz? Güçlü yanlarınız ve hedefleriniz neler? (Kısaca)"></textarea>
+                            <button id="generate-letter-btn" class="w-full mt-2 bg-indigo-600 text-white font-bold py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors">Mektup Taslağı Oluştur</button>
+                            <div id="letter-result-container" class="mt-4"></div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-red-600 border-l-4 border-red-600 pl-4 mb-4">Faz 4: Vize ve İtalya'ya Yolculuk</h3>
+                    <div class="space-y-4 ml-2">
+                        <h4 class="font-semibold text-lg">Adım 8: Ulusal Öğrenci Vizesi (D Tipi) Başvurusu</h4>
+                        <p class="text-slate-700">Kabul mektubu, pasaport, finansal kanıt (bankada yıllık ~6000 Euro), konaklama kanıtı ve sağlık sigortası gibi belgelerle konsolosluğun yetkili vize merkezine (örn: iData) başvurun.</p>
+                         <div class="mt-6 bg-red-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-lg text-red-800">✨ AI Destekli Vize Mülakatı Simülatörü</h4>
+                            <p class="text-red-700 text-sm mt-1 mb-3">Mülakata gitmeden önce en sık sorulan soruları ve başarılı cevap stratejilerini öğrenerek kendinize olan güveninizi artırın.</p>
+                            <button id="generate-interview-btn" class="w-full bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition-colors">Mülakat Provası Başlat</button>
+                        </div>
+                        <div class="mt-6 bg-yellow-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-lg text-yellow-800">✨ Kişisel Başvuru Takvimi Oluşturucu</h4>
+                            <p class="text-yellow-700 text-sm mt-1 mb-3">Hedef yılınızı girerek size özel başvuru takvimi ve evrak listesi oluşturun.</p>
+                            <input type="number" id="timeline-year" class="w-full text-sm p-2 rounded-md border-slate-300 shadow-sm" placeholder="Başvuru Hedef Yılınız (örn: 2025)">
+                            <button id="generate-timeline-btn" class="w-full mt-2 bg-yellow-600 text-white font-bold py-2 px-4 rounded-md hover:bg-yellow-700 transition-colors">Takvimimi ve Listemi Oluştur</button>
+                            <div id="timeline-result-container" class="mt-4"></div>
+                        </div>
+                        <h4 class="font-semibold text-lg">Adım 9: İtalya'ya Varış ve Son Adımlar</h4>
+                        <p class="text-slate-700">İtalya'ya vardığınızda ilk işleriniz "Codice Fiscale" (vergi numarası) almak ve 8 gün içinde oturma izni (Permesso di Soggiorno) başvurusunu postaneden yapmaktır.</p>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 py-6 mt-12">
-        <div class="container mx-auto px-4 text-center text-slate-500 text-sm">
-            2025 &copy; Yapay Zeka Destekli Sınav ve İtalya Rehberi — Tüm Hakları Saklıdır.
+    <div id="resource-modal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div class="p-4 border-b flex justify-between items-center">
+                <h3 id="modal-title" class="text-xl font-bold text-slate-900">Kaynaklar</h3>
+                <button id="close-modal-btn" class="text-2xl font-bold text-slate-500 hover:text-slate-800">×</button>
+            </div>
+            <div id="modal-content" class="p-6 space-y-4 overflow-y-auto"></div>
+        </div>
+    </div>
+    
+    <button id="pep-talk-btn" class="fixed bottom-5 right-5 bg-orange-500 text-white rounded-full p-4 shadow-lg hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-transform hover:scale-110">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+    </button>
+
+    <footer class="bg-white mt-12 py-6 border-t border-slate-200">
+        <div class="container mx-auto text-center text-slate-500 text-sm">
+            <p>© 2024 İnteraktif Sınav ve İtalya Rehberi. Tüm hakları saklıdır.</p>
+            <p class="mt-1">Bu uygulama, YKS ve TOLC-I hazırlık verileri ile Gemini AI tarafından desteklenmektedir.</p>
+            <p class="mt-4 font-bold text-lg text-slate-700">- by eren -</p>
         </div>
     </footer>
-    <script>
+
+<script>
 document.addEventListener('DOMContentLoaded', function () {
-    // ---------- Veriler ----------
+    
+    // --- DATA OBJECTS ---
     const curriculumData = {
         matematik: [
-            { title: "Temel Kavramlar", aiPrompt: "Matematikte temel kavramlar konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." },
-            { title: "Sayılar", aiPrompt: "Matematikte sayılar konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." },
-            { title: "Denklemler", aiPrompt: "Matematikte denklemler konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." },
-            { title: "Fonksiyonlar", aiPrompt: "Matematikte fonksiyonlar konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." }
+            { topic: "Temel Kavramlar", desc: "TYT ve TOLC-I için temel." },
+            { topic: "Üslü & Köklü Sayılar", desc: "Her iki sınavda da kesin soru." },
+            { topic: "Fonksiyonlar", desc: "AYT ve TOLC-I için kritik." },
+            { topic: "Trigonometri", desc: "AYT'nin en önemli konularından." },
+            { topic: "Limit ve Türev", desc: "AYT'nin zirve konuları." },
+            { topic: "İntegral", desc: "AYT'nin son büyük konusu." },
         ],
         fizik: [
-            { title: "Hareket", aiPrompt: "Fizikte hareket konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." },
-            { title: "Kuvvet", aiPrompt: "Fizikte kuvvet konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." },
-            { title: "Enerji", aiPrompt: "Fizikte enerji konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." }
+            { topic: "Mekanik", desc: "Fiziğin omurgası." },
+            { topic: "Elektrik ve Manyetizma", desc: "Geniş bir yer kaplar." },
+            { topic: "Dalgalar ve Optik", desc: "Kesin soru gelir." },
         ],
         kimya: [
-            { title: "Atomun Yapısı", aiPrompt: "Kimyada atomun yapısı konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." },
-            { title: "Periyodik Sistem", aiPrompt: "Kimyada periyodik sistem konusu için kısa ve öz bir konu özeti, ardından 5 temel seviye test sorusu ve çözümleri hazırla." }
+            { topic: "Atom ve Periyodik Sistem", desc: "Kimyanın temeli." },
+            { topic: "Mol Kavramı", desc: "Sayısal soruların temeli." },
+            { topic: "Organik Kimya", desc: "AYT'de büyük bir yer kaplar." },
         ],
-        ingilizce: [
-            { title: "Present Simple", aiPrompt: "İngilizcede Present Simple zamanı için kısa bir özet ve 5 örnek cümle hazırla." },
-            { title: "Past Simple", aiPrompt: "İngilizcede Past Simple zamanı için kısa bir özet ve 5 örnek cümle hazırla." }
-        ]
+        ingilizce: {
+            A1: [{ topic: "Present Simple & 'to be'" }, { topic: "Articles (a/an/the)" }, { topic: "Possessive Adjectives" }],
+            A2: [{ topic: "Past Simple" }, { topic: "Present Continuous" }, { topic: "Countable/Uncountable Nouns" }],
+            B1: [{ topic: "Present Perfect" }, { topic: "Conditionals (Type 1 & 2)" }, { topic: "Modals of Ability/Permission" }],
+            B2: [{ topic: "Past Perfect Simple/Continuous" }, { topic: "Reported Speech" }, { topic: "Passive Voice (all tenses)" }],
+            C1: [{ topic: "Advanced Conditionals (Mixed, Inversion)" }, { topic: "Advanced Passive Structures" }, { topic: "Phrasal Verbs & Idioms" }],
+            C2: [{ topic: "Subjunctive" }, { topic: "Inversion with Negative Adverbials" }, { topic: "Academic Writing Structures" }]
+        }
     };
-
     const vocabularyData = {
-        english: {
-            A1: ["apple", "book", "cat", "dog", "egg", "fish", "girl", "house", "ice", "juice"],
-            A2: ["always", "beautiful", "change", "dangerous", "enough", "famous", "giraffe", "healthy", "invite", "jungle"],
-            B1: ["ambitious", "benefit", "compete", "decision", "effective", "frequently", "genuine", "hesitate", "ignore", "justice"],
-            B2: ["acquire", "bizarre", "consequence", "devote", "emphasize", "fundamental", "gratitude", "hypothesis", "inevitable", "jeopardize"]
-        },
-        italian: {
-            A1: ["ciao", "grazie", "pane", "acqua", "libro", "cane", "gatto", "sole", "scuola", "amico"],
-            A2: ["sempre", "bello", "cambiare", "pericoloso", "abbastanza", "famoso", "giraffa", "sano", "invitare", "giungla"],
-            B1: ["ambizioso", "beneficio", "competere", "decisione", "efficace", "frequentemente", "genuino", "esitare", "ignorare", "giustizia"],
-            B2: ["acquisire", "bizzarro", "conseguenza", "dedicare", "enfatizzare", "fondamentale", "gratitudine", "ipotesi", "inevitabile", "mettere a rischio"]
-        }
+        A1: [ { word: 'apple', tr: 'elma' }, { word: 'book', tr: 'kitap' }, { word: 'car', tr: 'araba' }, { word: 'house', tr: 'ev' }, { word: 'water', tr: 'su' }, { word: 'friend', tr: 'arkadaş' }, { word: 'school', tr: 'okul' }, { word: 'teacher', tr: 'öğretmen' }, { word: 'student', tr: 'öğrenci' }, { word: 'city', tr: 'şehir' }, { word: 'name', tr: 'isim' }, { word: 'family', tr: 'aile' }],
+        A2: [ { word: 'journey', tr: 'yolculuk' }, { word: 'weather', tr: 'hava durumu' }, { word: 'restaurant', tr: 'restoran' }, { word: 'holiday', tr: 'tatil' }, { word: 'music', tr: 'müzik' }, { word: 'language', tr: 'dil' }, { word: 'morning', tr: 'sabah' }, { word: 'evening', tr: 'akşam' }, { word: 'usually', tr: 'genellikle' }, { word: 'sometimes', tr: 'bazen' }, { word: 'beautiful', tr: 'güzel' }, { word: 'delicious', tr: 'lezzetli' }],
+        B1: [ { word: 'ability', tr: 'yetenek' }, { word: 'achieve', tr: 'başarmak' }, { word: 'adventure', tr: 'macera' }, { word: 'ancient', tr: 'antik' }, { word: 'apologize', tr: 'özür dilemek' }, { word: 'argue', tr: 'tartışmak' }, { word: 'communicate', tr: 'iletişim kurmak' }, { word: 'confidence', tr: 'özgüven' }, { word: 'describe', tr: 'tanımlamak' }, { word: 'environment', tr: 'çevre' }, { word: 'government', tr: 'hükümet' }, { word: 'opportunity', tr: 'fırsat' }],
+        B2: [ { word: 'ambitious', tr: 'hırslı' }, { word: 'anxious', tr: 'endişeli' }, { word: 'consequence', tr: 'sonuç' }, { word: 'convince', tr: 'ikna etmek' }, { word: 'criticize', tr: 'eleştirmek' }, { word: 'efficient', tr: 'verimli' }, { word: 'exhausted', tr: 'çok yorgun' }, { word: 'frustrating', tr: 'sinir bozucu' }, { word: 'generous', tr: 'cömert' }, { word: 'incredibly', tr: 'inanılmaz derecede' }, { word: 'reliable', tr: 'güvenilir' }, { word: 'significant', tr: 'önemli' }],
+        C1: [ { word: 'ambiguous', tr: 'belirsiz, muğlak' }, { word: 'collaborate', tr: 'işbirliği yapmak' }, { word: 'comprehensive', tr: 'kapsamlı' }, { word: 'dilemma', tr: 'ikilem' }, { word: 'elaborate', tr: 'detaylandırmak' }, { word: 'inevitable', tr: 'kaçınılmaz' }, { word: 'intuitive', tr: 'sezgisel' }, { word: 'meticulous', tr: 'titiz, kılı kırk yaran' }, { word: 'profound', tr: 'derin, etkileyici' }, { word: 'reluctant', tr: 'isteksiz' }, { word: 'sophisticated', tr: 'sofistike, gelişmiş' }, { word: 'versatile', tr: 'çok yönlü' }],
+        C2: [ { word: 'aberration', tr: 'sapma, anormallik' }, { word: 'capricious', tr: 'kaprisli, değişken' }, { 'word': 'egregious', 'tr': 'fevkalade kötü' }, { 'word': 'fastidious', 'tr': 'titiz, müşkülpesent' }, { 'word': 'gregarious', 'tr': 'sokulgan, sosyal' }, { 'word': 'juxtaposition', 'tr': 'yan yana koyma, karşılaştırma' }, { 'word': 'obfuscate', 'tr': 'kafasını karıştırmak, örtbas etmek' }, { 'word': 'plethora', 'tr': 'aşırı bolluk, fazlalık' }, { 'word': 'ubiquitous', 'tr': 'her yerde bulunan' }, { 'word': 'veracity', 'tr': 'doğruluk, dürüstlük' }]
     };
+    const yksScheduleData = [ { week: 1, content: "<b>Pzt:</b> Mat(Temel Kavramlar), Fiz(Giriş)<br><b>Sal:</b> Trk(Sözcük), Mat(Çözüm)" }, { week: 2, content: "<b>Pzt:</b> Mat(Bölme), Fiz(Çözüm)<br><b>Sal:</b> Trk(Cümle), Mat(Çözüm)" }, { week: 3, content: "<b>Pzt:</b> Mat(Eşitsizlik), Fiz(Çözüm)<br><b>Sal:</b> Trk(Paragraf), Mat(Çözüm)" }, { week: 4, content: "<b>Tekrar Haftası:</b> Genel tekrar ve denemeler." } ];
+    const tolciScheduleData = [ { week: 1, content: "<b>KC:</b> TYT Mat(Temel Kavramlar)<br><b>SÇ:</b> ALES(Sayısal Mantık)" }, { week: 2, content: "<b>KC:</b> TYT Mat(Rasyonel), Fiz(Giriş)<br><b>SÇ:</b> ALES(Sözel Mantık)" }, { week: 3, content: "<b>KC:</b> TYT Mat(Eşitsizlik), Kim(Giriş)<br><b>SÇ:</b> Metin Anlama" }, { week: 4, content: "<b>KC:</b> TYT Mat(Üslü), Fiz(Basınç)<br><b>SÇ:</b> Karma Mantık" }, { week: 5, content: "<b>KC:</b> AYT Mat(Fonksiyonlar)<br><b>SÇ:</b> Tekrar" }, { week: 6, content: "<b>KC:</b> AYT Mat(Parabol)<br><b>SÇ:</b> Karma Test" }, { week: 7, content: "<b>KC:</b> AYT Mat(Trigo-1)<br><b>SÇ:</b> Tekrar" }, { week: 8, content: "<b>KC:</b> AYT Mat(Trigo-2)<br><b>SÇ:</b> Deneme" }, { week: 9, content: "<b>KC:</b> AYT Kim(Gazlar)<br><b>SÇ:</b> Metin Anlama" }, { week: 10, content: "<b>KC:</b> AYT Kim(Çözeltiler)<br><b>SÇ:</b> ALES Mantık" }, { week: 11, content: "<b>KC:</b> AYT Kim(Denge)<br><b>SÇ:</b> Fizik Tekrar" }, { week: 12, content: "<b>KC:</b> AYT Kim(Organik)<br><b>SÇ:</b> Deneme" }, { week: 13, content: "<b>KC:</b> AYT Mat(Logaritma)<br><b>SÇ:</b> Soru Bankası" }, { week: 14, content: "<b>KC:</b> AYT Mat(Diziler)<br><b>SÇ:</b> Hız Testi" }, { week: 15, content: "<b>KC:</b> AYT Mat(Limit)<br><b>SÇ:</b> Bölüm Denemesi" }, { week: 16, content: "<b>KC:</b> AYT Mat(İntegral)<br><b>SÇ:</b> Genel Deneme" } ];
+    
+    let vocabularyState = {};
 
-    const yksScheduleData = [
-        "Başvuru Tarihi: Şubat-Mart",
-        "Sınav: Haziran başı",
-        "Sonuç Açıklanma: Temmuz başı",
-        "Tercih Dönemi: Temmuz sonu - Ağustos başı"
-    ];
-    const tolciScheduleData = [
-        "Başvuru: Ocak-Mart",
-        "Online Sınavlar: Şubat-Mayıs (her ay birkaç oturum)",
-        "Sonuçlar: Sınavdan hemen sonra",
-        "Üniversite Başvurusu: Haziran-Temmuz"
-    ];
-
-    // ---------- YARDIMCI FONKSİYONLAR ----------
-    function renderCurriculum(subject) {
-        const container = document.getElementById('curriculum-container');
-        container.innerHTML = '';
-        curriculumData[subject].forEach((topic, idx) => {
-            const card = document.createElement('div');
-            card.className = "bg-slate-50 border border-slate-200 rounded-lg p-4 mb-4 shadow-sm";
-            card.innerHTML = `
-                <h4 class="font-bold text-lg mb-2">${topic.title}</h4>
-                <button data-idx="${idx}" class="curriculum-ai-btn bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md">AI Kaynak Oluştur</button>
-                <div class="curriculum-ai-result mt-3"></div>
-            `;
-            container.appendChild(card);
-        });
-    }
-
-    function renderVocabularyList(lang, level) {
-        const listId = lang === 'english' ? 'english-vocab-list' : 'italian-vocab-list';
-        const vocabList = vocabularyData[lang][level] || [];
-        const container = document.getElementById(listId);
-        container.innerHTML = '';
-        vocabList.forEach((word, idx) => {
-            const span = document.createElement('span');
-            span.className = "vocab-word inline-block bg-slate-100 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-200";
-            span.textContent = word;
-            span.title = 'Ezberledim olarak işaretle';
-            span.onclick = () => span.classList.toggle('memorized');
-            container.appendChild(span);
-        });
-    }
-
-    function renderSchedule(listId, data) {
-        const ul = document.getElementById(listId);
-        ul.innerHTML = '';
-        data.forEach(item => {
-            const li = document.createElement('li');
-            li.textContent = item;
-            ul.appendChild(li);
-        });
-    }
-
-    function saveGoals(type, value) {
-        localStorage.setItem(type, value);
-        renderGoals(type);
-    }
-    function renderGoals(type) {
-        const val = localStorage.getItem(type) || '';
-        const el = document.getElementById(type + '-list');
-        if (el) el.innerHTML = val ? `<div class="bg-slate-100 rounded-md p-3 mt-2">${val}</div>` : '';
-    }
-
-    // ---------- CHART ----------
-    new Chart(document.getElementById('timePerQuestionChart'), {
-        type: 'bar',
-        data: {
-            labels: ['YKS (TYT)', 'YKS (AYT)', 'TOLC-I'],
-            datasets: [{
-                label: 'Soru başına süre (saniye)',
-                data: [74, 90, 125],
-                backgroundColor: ['#3b82f6', '#6366f1', '#22c55e']
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, title: { display: true, text: 'Süre (sn)' } }
-            }
-        }
-    });
-
-    // ---------- EVENTLER ----------
-
-    // Menü ve aktif linkler
-    function setActiveNav() {
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-        let hash = window.location.hash || '#genel-bakis';
-        let found = false;
-        document.querySelectorAll('.nav-link').forEach(link => {
-            if (link.getAttribute('href') === hash) {
-                link.classList.add('active');
-                found = true;
-            }
-        });
-        if (!found) document.querySelector('.nav-link').classList.add('active');
-    }
-    setActiveNav();
-    window.addEventListener('hashchange', setActiveNav);
-
-    // Mobil menü
-    document.getElementById('mobile-menu-button').onclick = () =>
-        document.getElementById('mobile-menu').classList.toggle('hidden');
-
-    // Müfredat render + ders seçme
+    // --- DOM Elements ---
     const subjectSelect = document.getElementById('subject-select');
-    renderCurriculum(subjectSelect.value);
-    subjectSelect.addEventListener('change', e => renderCurriculum(e.target.value));
+    const curriculumContainer = document.getElementById('curriculum-container');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-    // Curriculum AI
-    document.getElementById('curriculum-container').onclick = async function (e) {
-        if (e.target.classList.contains('curriculum-ai-btn')) {
-            const idx = e.target.getAttribute('data-idx');
-            const subject = subjectSelect.value;
-            const aiPrompt = curriculumData[subject][idx].aiPrompt;
-            const resultDiv = e.target.nextElementSibling;
-            resultDiv.innerHTML = '<div class="loader mx-auto my-4"></div>';
-            const aiResult = await callGemini(aiPrompt);
-            resultDiv.innerHTML = `<div class="bg-white rounded-md border p-3 mt-2 markdown-content">${marked.parse(aiResult)}</div>`;
-        }
-    };
-
-    // Vocabulary kartları
-    document.getElementById('english-level-select').addEventListener('change', e =>
-        renderVocabularyList('english', e.target.value));
-    document.getElementById('italian-level-select').addEventListener('change', e =>
-        renderVocabularyList('italian', e.target.value));
-    renderVocabularyList('english', 'A1');
-    renderVocabularyList('italian', 'A1');
-
-    // Sınav takvimleri
-    renderSchedule('yks-schedule-list', yksScheduleData);
-    renderSchedule('tolci-schedule-list', tolciScheduleData);
-
-    // Planlayıcı
-    ['weekly', 'monthly'].forEach(type => {
-        renderGoals(type + '-goals');
-        document.getElementById('save-' + type + '-goals').onclick = () => {
-            const val = document.getElementById(type + '-goals').value;
-            saveGoals(type + '-goals', val);
-        };
-    });
-
-    // --------- AI Fonksiyonları ---------
-    // Gemini API ile iletişim
+    // --- Core Functions ---
+    function showLoading(container) { container.innerHTML = '<div class="flex justify-center items-center p-6"><div class="loader"></div></div>'; }
+    function displayError(container, message) { container.innerHTML = `<div class="p-4 bg-red-100 text-red-700 rounded-md font-semibold text-center">${message}</div>`; }
+    function formatAIResponse(text) {
+        return text
+            .replace(/###\s*(.*)/g, '<h3 class="text-xl font-bold text-slate-800 mt-4 mb-2">$1</h3>')
+            .replace(/####\s*(.*)/g, '<h4 class="text-lg font-semibold text-slate-700 mt-3 mb-1">$1</h4>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-slate-900">$1</strong>')
+            .replace(/\n\s*-\s/g, '<ul><li>')
+            .replace(/-\s(.*?)(?:\n|\r|$)/g, '<li>$1</li>')
+            .replace(/(\r\n|\n|\r)/g, '<br>')
+            .replace(/<br><li>/g, '<li>')
+            .replace(/<\/li><br>/g, '</li>')
+            .replace(/<br><ul>/g, '<ul>');
+    }
+    
     async function callGemini(prompt) {
-        const apiKey = "AIzaSyBloRGu97cJQpOjo8d0yXX_xVWpFMzxjvc";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
         const payload = { contents: [{ parts: [{ text: prompt }] }] };
+
         try {
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+
             if (!response.ok) {
                 let errorData;
                 try {
@@ -508,6 +464,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const errorMessage = errorData?.error?.message ?? `Sunucu hatası: ${response.status}.`;
                 throw new Error(errorMessage);
             }
+
             const data = await response.json();
             if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
                 return data.candidates[0].content.parts[0].text;
@@ -520,76 +477,312 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // İngilizce Essay Analizi
-    document.getElementById('analyze-essay-btn').onclick = async function () {
-        const topic = document.getElementById('essay-topic').value.trim();
-        const essay = document.getElementById('essay-text').value.trim();
-        const container = document.getElementById('essay-analysis-container');
-        if (!topic || !essay) {
-            container.innerHTML = '<div class="text-red-600">Lütfen bir konu ve essay metni girin.</div>';
-            return;
+
+    // --- UI Population and Logic ---
+    function initializeVocabularyState() {
+        for (const level in vocabularyData) {
+            vocabularyState[level] = {
+                unseen: [...vocabularyData[level]]
+            };
         }
-        container.innerHTML = '<div class="loader mx-auto my-4"></div>';
-        const prompt = `Aşağıda bir IELTS/TOEFL essay yazısı ve konusu var. Yazıya, IELTS/TOEFL writing kriterlerine göre kısa ama detaylı bir feedback (puanlandırma, güçlü ve zayıf yönler, geliştirme önerileriyle) ver. Essay konusu: "${topic}" Essay metni: ${essay}`;
-        const aiResult = await callGemini(prompt);
-        container.innerHTML = `<div class="bg-white rounded-md border p-3 mt-2 markdown-content">${marked.parse(aiResult)}</div>`;
-    };
+    }
 
-    // İngilizce Speaking prompt
-    document.getElementById('generate-speaking-prompt-btn').onclick = async function () {
-        const container = document.getElementById('speaking-prompt-container');
-        container.innerHTML = '<div class="loader mx-auto my-4"></div>';
-        const prompt = "IELTS/TOEFL speaking sınavı için rastgele bir mülakat sorusu (Part 2 veya Part 3 gibi) üret.";
-        const aiResult = await callGemini(prompt);
-        container.innerHTML = `<div class="bg-white rounded-md border p-3 mt-2">${aiResult}</div>`;
-    };
+    function getVocabularyWords(level, count) {
+        let state = vocabularyState[level];
+        if (!state) return { words: [], message: null };
 
-    // İtalyanca Diyalog
-    document.getElementById('generate-dialogue-btn').onclick = async function () {
-        const scenario = document.getElementById('italian-scenario').value;
-        const container = document.getElementById('dialogue-container');
-        container.innerHTML = '<div class="loader mx-auto my-4"></div>';
-        const prompt = `İtalyanca günlük konuşma pratiği için aşağıdaki senaryoda geçen iki kişilik kısa bir diyalog yaz (her replikte Türkçe çevirisiyle birlikte): "${scenario}"`;
-        const aiResult = await callGemini(prompt);
-        container.innerHTML = `<div class="bg-white rounded-md border p-3 mt-2 markdown-content">${marked.parse(aiResult)}</div>`;
-    };
-
-    // AI Diyetisyen
-    document.getElementById('generate-diet-btn').onclick = async function () {
-        const container = document.getElementById('diet-container');
-        container.innerHTML = '<div class="loader mx-auto my-4"></div>';
-        const prompt = "YKS veya TOLC-I sınavına hazırlanan bir öğrenci için dengeli, sağlıklı ve ekonomik bir günlük menü öner. (kahvaltı, öğle, akşam, ara öğünler listelensin, açıklama kısa olsun)";
-        const aiResult = await callGemini(prompt);
-        container.innerHTML = `<div class="bg-white rounded-md border p-3 mt-2">${marked.parse(aiResult)}</div>`;
-    };
-
-    // AI Meditasyon
-    document.getElementById('generate-meditation-btn').onclick = async function () {
-        const container = document.getElementById('meditation-container');
-        container.innerHTML = '<div class="loader mx-auto my-4"></div>';
-        const prompt = "Yoğun sınav hazırlığı yapan bir öğrenci için 5 dakikalık nefes ve gevşeme egzersizleri içeren bir rehber hazırla. (adım adım, sade, motive edici)";
-        const aiResult = await callGemini(prompt);
-        container.innerHTML = `<div class="bg-white rounded-md border p-3 mt-2">${marked.parse(aiResult)}</div>`;
-    };
-
-    // İtalya rehberi AI
-    document.getElementById('ask-italy-ai-btn').onclick = async function () {
-        const input = document.getElementById('italy-question');
-        const question = input.value.trim();
-        const container = document.getElementById('italy-ai-answer');
-        if (!question) {
-            container.innerHTML = '<div class="text-red-600">Lütfen bir soru girin.</div>';
-            return;
+        let message = null;
+        if (state.unseen.length === 0) {
+            state.unseen = [...vocabularyData[level]];
+            message = "Tebrikler! Bu seviyedeki tüm kelimeleri öğrendiniz. Liste şimdi sıfırlanıyor.";
         }
-        container.innerHTML = '<div class="loader mx-auto my-4"></div>';
-        const prompt = `İtalya'da üniversiteye başvuru ve yerleşim hakkında şu soruya sade ve detaylı cevap ver: "${question}"`;
-        const aiResult = await callGemini(prompt);
-        container.innerHTML = `<div class="bg-white rounded-md border p-3 mt-2 markdown-content">${marked.parse(aiResult)}</div>`;
-    };
+        
+        const pool = [...state.unseen];
+        const selectedWords = [];
+        const numToPick = Math.min(count, pool.length);
 
+        for (let i = 0; i < numToPick; i++) {
+            const randomIndex = Math.floor(Math.random() * pool.length);
+            selectedWords.push(pool.splice(randomIndex, 1)[0]);
+        }
+        
+        return { words: selectedWords, message: message };
+    }
+
+    function populateCurriculum(subject) {
+        curriculumContainer.innerHTML = '';
+        if (subject === 'ingilizce') {
+            populateEnglishCurriculum();
+        } else {
+            populateGenericCurriculum(subject);
+        }
+    }
+
+    function populateGenericCurriculum(subject) {
+        const grid = document.createElement('div');
+        grid.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4';
+        const data = curriculumData[subject];
+        data.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'bg-slate-100 p-4 rounded-lg shadow-sm hover:shadow-md hover:-translate-y-1 transition-transform duration-200';
+            card.innerHTML = `
+                <h4 class="font-bold text-lg text-slate-800">${item.topic}</h4>
+                <p class="text-sm text-slate-600 mt-1">${item.desc}</p>
+                <button class="resource-btn w-full mt-4 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-indigo-700 text-sm" data-topic="${item.topic}">
+                    ✨ AI ile Öğren
+                </button>`;
+            grid.appendChild(card);
+        });
+        curriculumContainer.appendChild(grid);
+    }
+    
+    function populateEnglishCurriculum() {
+        const levels = Object.keys(curriculumData.ingilizce);
+        const accordionContainer = document.createElement('div');
+        accordionContainer.className = 'space-y-2';
+        const levelColorClasses = { A1: 'bg-green-100 text-green-800', A2: 'bg-green-200 text-green-900', B1: 'bg-blue-100 text-blue-800', B2: 'bg-blue-200 text-blue-900', C1: 'bg-red-100 text-red-800', C2: 'bg-red-200 text-red-900' };
+        levels.forEach(level => {
+            const levelData = curriculumData.ingilizce[level];
+            const levelDiv = document.createElement('div');
+            levelDiv.className = 'border border-slate-200 rounded-lg';
+            levelDiv.innerHTML = `
+                <div class="level-accordion-header p-4 flex justify-between items-center ${levelColorClasses[level]}">
+                    <h3 class="font-bold text-lg">${level} Seviyesi</h3>
+                    <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </div>
+                <div class="level-accordion-content">
+                    <div class="p-4 border-t border-slate-200">
+                        <h4 class="font-semibold mb-3 text-md text-slate-700">Gramer Konuları</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-6">
+                            ${levelData.map(item => `
+                                <button class="resource-btn text-left p-3 bg-slate-50 rounded-md hover:bg-slate-100" data-topic="${item.topic} (${level})">
+                                    ${item.topic}
+                                </button>
+                            `).join('')}
+                        </div>
+                        <h4 class="font-semibold mb-3 text-md text-slate-700">Kelime Çalışması</h4>
+                        <button class="vocab-level-btn w-full bg-amber-500 text-white font-bold py-2 px-4 rounded-md hover:bg-amber-600" data-level="${level}">
+                            ✨ ${level} Seviyesi - 10 Yeni Kelime Öğren
+                        </button>
+                    </div>
+                </div>`;
+            accordionContainer.appendChild(levelDiv);
+        });
+        curriculumContainer.appendChild(accordionContainer);
+    }
+
+    curriculumContainer.addEventListener('click', function(e) {
+        const header = e.target.closest('.level-accordion-header');
+        if (header) {
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('svg');
+            content.style.maxHeight ? (content.style.maxHeight = null, icon.classList.remove('rotate-180')) : (content.style.maxHeight = content.scrollHeight + "px", icon.classList.add('rotate-180'));
+        }
+        const resourceButton = e.target.closest('.resource-btn');
+        if (resourceButton) {
+            const topic = resourceButton.dataset.topic;
+            openModal(`${topic} Konu Anlatımı`, async (modalContent) => {
+                showLoading(modalContent);
+                const prompt = `Bir lise öğrencisine "${topic}" konusunu açıkla. Konuyu komik ve esprili bir arkadaşı gibi yap. Anlatım basit, anlaşılır ve eğlenceli olsun. 'Bu Gerçek Hayatta Ne İşe Yarayacak?' başlığı altında pratik bir örnek ver. Yanıt sadece Türkçe olmalıdır.`;
+                const result = await callGemini(prompt);
+                modalContent.innerHTML = `<div class="p-2 text-sm markdown-content">${formatAIResponse(result)}</div>`;
+            });
+        }
+        const vocabButton = e.target.closest('.vocab-level-btn');
+        if (vocabButton) {
+            const level = vocabButton.dataset.level;
+            const { words, message } = getVocabularyWords(level, 10);
+            openModal(`${level} Seviyesi Kelime Kartları`, (modalContent) => {
+                if (words.length === 0 && !message) {
+                    modalContent.innerHTML = `<p class="text-center">Bu seviye için kelime bulunamadı.</p>`;
+                    return;
+                }
+                
+                let html = `<p class="text-sm text-center mb-4">Öğrendiğiniz kelimenin üzerine tıklayarak bu tur için listeden kaldırabilirsiniz.</p>`;
+                if (message) {
+                    html += `<p class="text-center font-semibold text-green-600 mb-4">${message}</p>`;
+                }
+                modalContent.innerHTML = html;
+
+                const wordList = document.createElement('div');
+                wordList.className = 'space-y-3';
+                words.forEach(wordData => {
+                    const wordDiv = document.createElement('div');
+                    wordDiv.className = 'vocab-word p-3 bg-slate-50 rounded-md';
+                    wordDiv.dataset.word = wordData.word;
+                    wordDiv.innerHTML = `<strong class="text-blue-700">${wordData.word}</strong>: ${wordData.tr}`;
+                    
+                    wordDiv.addEventListener('click', () => {
+                        wordDiv.classList.toggle('memorized');
+                        const wordToRemove = wordDiv.dataset.word;
+                        const levelState = vocabularyState[level];
+                        
+                        if (wordDiv.classList.contains('memorized')) {
+                            const index = levelState.unseen.findIndex(w => w.word === wordToRemove);
+                            if (index > -1) {
+                                levelState.unseen.splice(index, 1);
+                            }
+                        } else {
+                            const isPresent = levelState.unseen.some(w => w.word === wordToRemove);
+                            if (!isPresent) {
+                                const originalWord = vocabularyData[level].find(w => w.word === wordToRemove);
+                                if (originalWord) {
+                                    levelState.unseen.push(originalWord);
+                                }
+                            }
+                        }
+                    });
+                    wordList.appendChild(wordDiv);
+                });
+                modalContent.appendChild(wordList);
+            });
+        }
+    });
+
+    // --- Initial Setup ---
+    subjectSelect.addEventListener('change', (e) => populateCurriculum(e.target.value));
+    initializeVocabularyState();
+    populateCurriculum('matematik');
+    
+    // --- Chart.js Initialization ---
+    new Chart(document.getElementById('timePerQuestionChart').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: ['YKS-TYT', 'YKS-AYT (Sayısal)', 'TOLC-I'],
+            datasets: [{
+                label: 'Soru Başına Ortalama Süre (Saniye)',
+                data: [82.5, 135, 132],
+                backgroundColor: ['rgba(59, 130, 246, 0.6)', 'rgba(239, 68, 68, 0.6)', 'rgba(34, 197, 94, 0.6)'],
+                borderColor: ['rgba(59, 130, 246, 1)', 'rgba(239, 68, 68, 1)', 'rgba(34, 197, 94, 1)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            scales: { y: { beginAtZero: true, title: { display: true, text: 'Saniye' } } },
+            plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c) => `${c.dataset.label}: ${c.raw} saniye` } } }
+        }
+    });
+    
+    // --- Navigation & Other UI ---
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.getAttribute('id');
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                });
+            }
+        });
+    }, { rootMargin: '-20% 0px -80% 0px' });
+    sections.forEach(section => observer.observe(section));
+    navLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            if (targetSection) window.scrollTo({ top: targetSection.offsetTop - 64, behavior: 'smooth' });
+            if (!mobileMenu.classList.contains('hidden')) mobileMenu.classList.add('hidden');
+        });
+    });
+    mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    
+    const planTabs = document.querySelectorAll('.plan-tab');
+    const planContents = document.querySelectorAll('.plan-content');
+    planTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            planTabs.forEach(t => {
+                t.classList.remove('text-blue-600', 'border-blue-600');
+                t.classList.add('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300', 'border-transparent');
+            });
+            tab.classList.add('text-blue-600', 'border-blue-600');
+            const target = tab.getAttribute('data-target');
+            planContents.forEach(c => c.id === target ? c.classList.remove('hidden') : c.classList.add('hidden'));
+        });
+    });
+
+
+    // --- AI Feature Handlers ---
+    async function handleAIFeatureClick(buttonId, containerId, promptGenerator, requiredInputs = []) {
+        const button = document.getElementById(buttonId);
+        if (!button) return;
+        const container = document.getElementById(containerId);
+        button.addEventListener('click', async () => {
+            let inputs = {};
+            for (const input of requiredInputs) {
+                const el = document.getElementById(input.id);
+                if (!el || !el.value) {
+                    displayError(container, input.error);
+                    return;
+                }
+                inputs[input.key] = el.value;
+            }
+            showLoading(container);
+            const prompt = promptGenerator(inputs);
+            const result = await callGemini(prompt);
+            container.innerHTML = result.startsWith("Bir sorun oluştu:")
+                ? `<div class="p-4 bg-red-100 text-red-700 rounded-md">${result}</div>`
+                : `<div class="p-4 bg-slate-50 rounded-md text-sm markdown-content">${formatAIResponse(result)}</div>`;
+        });
+    }
+
+    handleAIFeatureClick('analyze-essay-btn', 'essay-analysis-container', 
+        (i) => `Bir IELTS/TOEFL uzmanı olarak şu essay'i analiz et: Konu: "${i.topic}", Metin: "${i.text}". 4 kritere göre (Task Response, Coherence, Lexical, Grammatical) 1-9 arası puanla, geri bildirimlerle ve genel tavsiyelerle Türkçe ve markdown formatında değerlendir.`,
+        [{id: 'essay-topic', key: 'topic', error: 'Lütfen bir konu girin.'}, {id: 'essay-text', key: 'text', error: 'Lütfen essay metnini girin.'}]
+    );
+    handleAIFeatureClick('generate-speaking-prompt-btn', 'speaking-prompt-container',
+        () => `Bir IELTS Speaking Part 2/3 tarzında, üzerinde düşünülecek bir konuşma sorusu ve 3-4 alt madde oluştur. Konu; teknoloji, toplum, eğitim gibi yaygın mülakat konularından olsun. Yanıt sadece soruyu ve maddeleri içermeli ve Türkçe olmalıdır.`
+    );
+    handleAIFeatureClick('generate-dialogue-btn', 'dialogue-container',
+        (i) => `İtalyanca A1/A2 seviyesi için bir diyalog oluştur. Senaryo: "${i.scenario}". Diyalogda iki kişi olsun. Her İtalyanca cümlenin altına parantez içinde Türkçe çevirisini ekle. Yanıtı markdown formatında sun.`,
+        [{id: 'italian-scenario', key: 'scenario', error: 'Lütfen bir senaryo seçin.'}]
+    );
+    handleAIFeatureClick('generate-diet-btn', 'diet-container', 
+        () => `Bir diyetisyen olarak, sınava hazırlanan öğrenci için 1 günlük, pratik, sağlıklı ve bütçeye uygun beslenme programı hazırla (Kahvaltı, Öğle, Akşam, Ara Öğün). Beyin fonksiyonlarını destekleyen yiyecekler olsun. Her öğünü kısaca açıkla. Yanıtı markdown ve Türkçe olarak sun.`
+    );
+    handleAIFeatureClick('generate-meditation-btn', 'meditation-container', 
+        () => `Sınav stresi yaşayan bir öğrenci için 5 dakikalık, metin tabanlı bir rehberli nefes egzersizi veya farkındalık (mindfulness) metni oluştur. Sakinleştirici bir dille adım adım talimatlar içermeli. Amaç zihni sakinleştirmek. Yanıt sadece Türkçe talimat metnini içermelidir.`
+    );
+    handleAIFeatureClick('generate-plan-btn', 'plan-result-container',
+        (i) => `Bir öğrenci için 1 haftalık detaylı ve gerçekçi bir ${i.examType} çalışma planı oluştur. Zayıf konular: ${i.weak}. Güçlü konular: ${i.strong}. Planı Pazartesi-Cumartesi arası, Pazar dinlenme olacak şekilde, uygulanabilir bloklara böl. Büyük konuları alt başlıklara ayırarak günlere yay. Çıktıyı başlık ve listelerle Türkçe ve markdown formatında sun.`,
+        [{id: 'weak-subjects', key: 'weak', error: 'Lütfen zayıf konuları girin.'}, {id: 'strong-subjects', key: 'strong', error: 'Lütfen güçlü konuları girin.'}, {id: 'exam-type', key: 'examType', error: 'Lütfen sınav türünü seçin.'}]
+    );
+    handleAIFeatureClick('analyze-error-btn', 'error-analysis-container',
+        (i) => `Sen uzman bir eğitim koçusun. Bir öğrencinin yaptığı hatayı analiz et. Konu: ${i.topic}. Soru: "${i.question}". Öğrencinin Yanlış Cevabı: "${i.answer}". Analizini 3 başlıkta sun: 1. **Doğru Çözüm Adım Adım**. 2. **Muhtemel Hata Kaynağı**. 3. **Tekrar Etmen Gereken Konu**. Yanıt sadece Türkçe ve markdown formatında olmalıdır.`,
+        [{id: 'error-topic', key: 'topic', error: 'Lütfen konuyu girin.'}, {id: 'error-question', key: 'question', error: 'Lütfen soruyu girin.'}, {id: 'error-answer', key: 'answer', error: 'Lütfen cevabınızı girin.'}]
+    );
+    
+    
+    // --- Modal Handling ---
+    const resourceModal = document.getElementById('resource-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalContent = document.getElementById('modal-content');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    function openModal(title, contentSetupCallback) {
+        modalTitle.textContent = title;
+        modalContent.innerHTML = '';
+        if (contentSetupCallback) contentSetupCallback(modalContent);
+        resourceModal.classList.remove('hidden');
+    }
+    function closeModal() {
+        resourceModal.classList.add('hidden');
+        modalContent.innerHTML = '';
+    }
+    closeModalBtn.addEventListener('click', closeModal);
+    resourceModal.addEventListener('click', (e) => { if (e.target === resourceModal) closeModal(); });
+
+    document.getElementById('pep-talk-btn').addEventListener('click', () => {
+        openModal("Motivasyon Koçu", async (modalContent) => {
+            showLoading(modalContent);
+            const prompt = `Sen motive edici bir koçsun. Sınava hazırlanan ve yorgun hisseden bir öğrenci için kısa (2-3 cümle), güçlü ve samimi bir motivasyon konuşması yap. Biraz da esprili olabilir. Yanıt sadece Türkçe olmalıdır.`;
+            const result = await callGemini(prompt);
+            modalContent.innerHTML = result.startsWith("Bir sorun oluştu:")
+                ? `<p class="text-center text-lg font-semibold text-red-600">${result}</p>`
+                : `<p class="text-center text-lg font-semibold">${result}</p>`;
+        });
+    });
 });
 </script>
-<!-- Marked.js for Markdown rendering -->
-<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
 </body>
 </html>
