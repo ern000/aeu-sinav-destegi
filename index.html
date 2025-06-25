@@ -412,7 +412,7 @@ document.addEventListener('DOMContentLoaded', function () {
         B1: [ { word: 'ability', tr: 'yetenek' }, { word: 'achieve', tr: 'başarmak' }, { word: 'adventure', tr: 'macera' }, { word: 'ancient', tr: 'antik' }, { word: 'apologize', tr: 'özür dilemek' }, { word: 'argue', tr: 'tartışmak' }, { word: 'communicate', tr: 'iletişim kurmak' }, { word: 'confidence', tr: 'özgüven' }, { word: 'describe', tr: 'tanımlamak' }, { word: 'environment', tr: 'çevre' }, { word: 'government', tr: 'hükümet' }, { word: 'opportunity', tr: 'fırsat' }],
         B2: [ { word: 'ambitious', tr: 'hırslı' }, { word: 'anxious', tr: 'endişeli' }, { word: 'consequence', tr: 'sonuç' }, { word: 'convince', tr: 'ikna etmek' }, { word: 'criticize', tr: 'eleştirmek' }, { word: 'efficient', tr: 'verimli' }, { word: 'exhausted', tr: 'çok yorgun' }, { word: 'frustrating', tr: 'sinir bozucu' }, { word: 'generous', tr: 'cömert' }, { word: 'incredibly', tr: 'inanılmaz derecede' }, { word: 'reliable', tr: 'güvenilir' }, { word: 'significant', tr: 'önemli' }],
         C1: [ { word: 'ambiguous', tr: 'belirsiz, muğlak' }, { word: 'collaborate', tr: 'işbirliği yapmak' }, { word: 'comprehensive', tr: 'kapsamlı' }, { word: 'dilemma', tr: 'ikilem' }, { word: 'elaborate', tr: 'detaylandırmak' }, { word: 'inevitable', tr: 'kaçınılmaz' }, { word: 'intuitive', tr: 'sezgisel' }, { word: 'meticulous', tr: 'titiz, kılı kırk yaran' }, { word: 'profound', tr: 'derin, etkileyici' }, { word: 'reluctant', tr: 'isteksiz' }, { word: 'sophisticated', tr: 'sofistike, gelişmiş' }, { word: 'versatile', tr: 'çok yönlü' }],
-        C2: [ { word: 'aberration', tr: 'sapma, anormallik' }, { word: 'capricious', tr: 'kaprisli, değişken' }, { word: 'egregious', tr: 'fevkalade kötü' }, { word: 'fastidious', tr: 'titiz, müşkülpesent' }, { word: 'gregarious', tr: 'sokulgan, sosyal' }, { word: 'juxtaposition', tr: 'yan yana koyma, karşılaştırma' }, { 'word': 'obfuscate', 'tr': 'kafasını karıştırmak, örtbas etmek' }, { 'word': 'plethora', 'tr': 'aşırı bolluk, fazlalık' }, { 'word': 'ubiquitous', 'tr': 'her yerde bulunan' }, { 'word': 'veracity', 'tr': 'doğruluk, dürüstlük' }]
+        C2: [ { word: 'aberration', tr: 'sapma, anormallik' }, { word: 'capricious', tr: 'kaprisli, değişken' }, { 'word': 'egregious', 'tr': 'fevkalade kötü' }, { 'word': 'fastidious', 'tr': 'titiz, müşkülpesent' }, { 'word': 'gregarious', 'tr': 'sokulgan, sosyal' }, { 'word': 'juxtaposition', 'tr': 'yan yana koyma, karşılaştırma' }, { 'word': 'obfuscate', 'tr': 'kafasını karıştırmak, örtbas etmek' }, { 'word': 'plethora', 'tr': 'aşırı bolluk, fazlalık' }, { 'word': 'ubiquitous', 'tr': 'her yerde bulunan' }, { 'word': 'veracity', 'tr': 'doğruluk, dürüstlük' }]
     };
     const yksScheduleData = [ { week: 1, content: "<b>Pzt:</b> Mat(Temel Kavramlar), Fiz(Giriş)<br><b>Sal:</b> Trk(Sözcük), Mat(Çözüm)" }, { week: 2, content: "<b>Pzt:</b> Mat(Bölme), Fiz(Çözüm)<br><b>Sal:</b> Trk(Cümle), Mat(Çözüm)" }, { week: 3, content: "<b>Pzt:</b> Mat(Eşitsizlik), Fiz(Çözüm)<br><b>Sal:</b> Trk(Paragraf), Mat(Çözüm)" }, { week: 4, content: "<b>Tekrar Haftası:</b> Genel tekrar ve denemeler." } ];
     const tolciScheduleData = [ { week: 1, content: "<b>KC:</b> TYT Mat(Temel Kavramlar)<br><b>SÇ:</b> ALES(Sayısal Mantık)" }, { week: 2, content: "<b>KC:</b> TYT Mat(Rasyonel), Fiz(Giriş)<br><b>SÇ:</b> ALES(Sözel Mantık)" }, { week: 3, content: "<b>KC:</b> TYT Mat(Eşitsizlik), Kim(Giriş)<br><b>SÇ:</b> Metin Anlama" }, { week: 4, content: "<b>KC:</b> TYT Mat(Üslü), Fiz(Basınç)<br><b>SÇ:</b> Karma Mantık" }, { week: 5, content: "<b>KC:</b> AYT Mat(Fonksiyonlar)<br><b>SÇ:</b> Tekrar" }, { week: 6, content: "<b>KC:</b> AYT Mat(Parabol)<br><b>SÇ:</b> Karma Test" }, { week: 7, content: "<b>KC:</b> AYT Mat(Trigo-1)<br><b>SÇ:</b> Tekrar" }, { week: 8, content: "<b>KC:</b> AYT Mat(Trigo-2)<br><b>SÇ:</b> Deneme" }, { week: 9, content: "<b>KC:</b> AYT Kim(Gazlar)<br><b>SÇ:</b> Metin Anlama" }, { week: 10, content: "<b>KC:</b> AYT Kim(Çözeltiler)<br><b>SÇ:</b> ALES Mantık" }, { week: 11, content: "<b>KC:</b> AYT Kim(Denge)<br><b>SÇ:</b> Fizik Tekrar" }, { week: 12, content: "<b>KC:</b> AYT Kim(Organik)<br><b>SÇ:</b> Deneme" }, { week: 13, content: "<b>KC:</b> AYT Mat(Logaritma)<br><b>SÇ:</b> Soru Bankası" }, { week: 14, content: "<b>KC:</b> AYT Mat(Diziler)<br><b>SÇ:</b> Hız Testi" }, { week: 15, content: "<b>KC:</b> AYT Mat(Limit)<br><b>SÇ:</b> Bölüm Denemesi" }, { week: 16, content: "<b>KC:</b> AYT Mat(İntegral)<br><b>SÇ:</b> Genel Deneme" } ];
@@ -428,8 +428,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const mobileMenu = document.getElementById('mobile-menu');
 
     // Gemini API Configuration
-    const apiKey = ""; // API anahtarınızı buraya girin
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
 
     // --- Core Functions ---
     function showLoading(container) { container.innerHTML = '<div class="flex justify-center items-center p-6"><div class="loader"></div></div>'; }
@@ -448,8 +447,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     async function callGemini(prompt) {
         const payload = { contents: [{ parts: [{ text: prompt }] }] };
+        const apiKey = "" // Canvas will provide this.
+        const fullApiUrl = `${apiUrl}?key=${apiKey}`;
         try {
-            const response = await fetch(apiUrl, {
+            const response = await fetch(fullApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -475,27 +476,31 @@ document.addEventListener('DOMContentLoaded', function () {
     function initializeVocabularyState() {
         for (const level in vocabularyData) {
             vocabularyState[level] = {
-                unseen: [...vocabularyData[level]],
-                seen: []
+                unseen: [...vocabularyData[level]]
             };
         }
     }
 
     function getVocabularyWords(level, count) {
-        if (!vocabularyState[level]) return [];
-        let words = [];
-        for (let i = 0; i < count; i++) {
-            if (vocabularyState[level].unseen.length === 0) {
-                vocabularyState[level].unseen = [...vocabularyState[level].seen];
-                vocabularyState[level].seen = [];
-            }
-            if (vocabularyState[level].unseen.length === 0) break;
-            const randomIndex = Math.floor(Math.random() * vocabularyState[level].unseen.length);
-            const selectedWord = vocabularyState[level].unseen.splice(randomIndex, 1)[0];
-            words.push(selectedWord);
-            vocabularyState[level].seen.push(selectedWord);
+        let state = vocabularyState[level];
+        if (!state) return { words: [], message: null };
+
+        let message = null;
+        if (state.unseen.length === 0) {
+            state.unseen = [...vocabularyData[level]];
+            message = "Tebrikler! Bu seviyedeki tüm kelimeleri öğrendiniz. Liste şimdi sıfırlanıyor.";
         }
-        return words;
+        
+        const pool = [...state.unseen];
+        const selectedWords = [];
+        const numToPick = Math.min(count, pool.length);
+
+        for (let i = 0; i < numToPick; i++) {
+            const randomIndex = Math.floor(Math.random() * pool.length);
+            selectedWords.push(pool.splice(randomIndex, 1)[0]);
+        }
+        
+        return { words: selectedWords, message: message };
     }
 
     function populateCurriculum(subject) {
@@ -580,20 +585,47 @@ document.addEventListener('DOMContentLoaded', function () {
         const vocabButton = e.target.closest('.vocab-level-btn');
         if (vocabButton) {
             const level = vocabButton.dataset.level;
-            const words = getVocabularyWords(level, 10);
+            const { words, message } = getVocabularyWords(level, 10);
             openModal(`${level} Seviyesi Kelime Kartları`, (modalContent) => {
-                if (words.length === 0) {
+                if (words.length === 0 && !message) {
                     modalContent.innerHTML = `<p class="text-center">Bu seviye için kelime bulunamadı.</p>`;
                     return;
                 }
-                modalContent.innerHTML = `<p class="text-sm text-center mb-4">Öğrendiğiniz kelimenin üzerine tıklayarak işaretleyebilirsiniz.</p>`;
+                
+                let html = `<p class="text-sm text-center mb-4">Öğrendiğiniz kelimenin üzerine tıklayarak bu tur için listeden kaldırabilirsiniz.</p>`;
+                if (message) {
+                    html += `<p class="text-center font-semibold text-green-600 mb-4">${message}</p>`;
+                }
+                modalContent.innerHTML = html;
+
                 const wordList = document.createElement('div');
                 wordList.className = 'space-y-3';
                 words.forEach(wordData => {
                     const wordDiv = document.createElement('div');
                     wordDiv.className = 'vocab-word p-3 bg-slate-50 rounded-md';
+                    wordDiv.dataset.word = wordData.word;
                     wordDiv.innerHTML = `<strong class="text-blue-700">${wordData.word}</strong>: ${wordData.tr}`;
-                    wordDiv.addEventListener('click', () => wordDiv.classList.toggle('memorized'));
+                    
+                    wordDiv.addEventListener('click', () => {
+                        wordDiv.classList.toggle('memorized');
+                        const wordToRemove = wordDiv.dataset.word;
+                        const levelState = vocabularyState[level];
+                        
+                        if (wordDiv.classList.contains('memorized')) {
+                            const index = levelState.unseen.findIndex(w => w.word === wordToRemove);
+                            if (index > -1) {
+                                levelState.unseen.splice(index, 1);
+                            }
+                        } else {
+                            const isPresent = levelState.unseen.some(w => w.word === wordToRemove);
+                            if (!isPresent) {
+                                const originalWord = vocabularyData[level].find(w => w.word === wordToRemove);
+                                if (originalWord) {
+                                    levelState.unseen.push(originalWord);
+                                }
+                            }
+                        }
+                    });
                     wordList.appendChild(wordDiv);
                 });
                 modalContent.appendChild(wordList);
@@ -626,7 +658,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     
-    // --- Navigation ---
+    // --- Navigation & Other UI ---
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -648,16 +680,32 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
     mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    
+    const planTabs = document.querySelectorAll('.plan-tab');
+    const planContents = document.querySelectorAll('.plan-content');
+    planTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            planTabs.forEach(t => {
+                t.classList.remove('text-blue-600', 'border-blue-600');
+                t.classList.add('text-slate-500', 'hover:text-slate-700', 'hover:border-slate-300', 'border-transparent');
+            });
+            tab.classList.add('text-blue-600', 'border-blue-600');
+            const target = tab.getAttribute('data-target');
+            planContents.forEach(c => c.id === target ? c.classList.remove('hidden') : c.classList.add('hidden'));
+        });
+    });
 
-    // --- AI Feature Event Listeners ---
+
+    // --- AI Feature Handlers ---
     async function handleAIFeatureClick(buttonId, containerId, promptGenerator, requiredInputs = []) {
         const button = document.getElementById(buttonId);
+        if (!button) return;
         const container = document.getElementById(containerId);
         button.addEventListener('click', async () => {
             let inputs = {};
             for (const input of requiredInputs) {
                 const el = document.getElementById(input.id);
-                if (!el.value) {
+                if (!el || !el.value) {
                     displayError(container, input.error);
                     return;
                 }
@@ -689,6 +737,15 @@ document.addEventListener('DOMContentLoaded', function () {
     handleAIFeatureClick('generate-meditation-btn', 'meditation-container', 
         () => `Sınav stresi yaşayan bir öğrenci için 5 dakikalık, metin tabanlı bir rehberli nefes egzersizi veya farkındalık (mindfulness) metni oluştur. Sakinleştirici bir dille adım adım talimatlar içermeli. Amaç zihni sakinleştirmek. Yanıt sadece Türkçe talimat metnini içermelidir.`
     );
+    handleAIFeatureClick('generate-plan-btn', 'plan-result-container',
+        (i) => `Bir öğrenci için 1 haftalık detaylı ve gerçekçi bir ${i.examType} çalışma planı oluştur. Zayıf konular: ${i.weak}. Güçlü konular: ${i.strong}. Planı Pazartesi-Cumartesi arası, Pazar dinlenme olacak şekilde, uygulanabilir bloklara böl. Büyük konuları alt başlıklara ayırarak günlere yay. Çıktıyı başlık ve listelerle Türkçe ve markdown formatında sun.`,
+        [{id: 'weak-subjects', key: 'weak', error: 'Lütfen zayıf konuları girin.'}, {id: 'strong-subjects', key: 'strong', error: 'Lütfen güçlü konuları girin.'}, {id: 'exam-type', key: 'examType', error: 'Lütfen sınav türünü seçin.'}]
+    );
+    handleAIFeatureClick('analyze-error-btn', 'error-analysis-container',
+        (i) => `Sen uzman bir eğitim koçusun. Bir öğrencinin yaptığı hatayı analiz et. Konu: ${i.topic}. Soru: "${i.question}". Öğrencinin Yanlış Cevabı: "${i.answer}". Analizini 3 başlıkta sun: 1. **Doğru Çözüm Adım Adım**. 2. **Muhtemel Hata Kaynağı**. 3. **Tekrar Etmen Gereken Konu**. Yanıt sadece Türkçe ve markdown formatında olmalıdır.`,
+        [{id: 'error-topic', key: 'topic', error: 'Lütfen konuyu girin.'}, {id: 'error-question', key: 'question', error: 'Lütfen soruyu girin.'}, {id: 'error-answer', key: 'answer', error: 'Lütfen cevabınızı girin.'}]
+    );
+    
     
     // --- Modal Handling ---
     const resourceModal = document.getElementById('resource-modal');
