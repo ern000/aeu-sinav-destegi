@@ -447,10 +447,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     async function callGemini(prompt) {
         const payload = { contents: [{ parts: [{ text: prompt }] }] };
-        const apiKey = "" // Canvas will provide this.
+        const apiKey = "" // Canvas will provide the API key automatically. Do not add it here.
         const fullApiUrl = `${apiUrl}?key=${apiKey}`;
+        
         try {
-            const response = await fetch(fullApiUrl, {
+            // Using the base apiUrl directly, platform handles the key.
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
