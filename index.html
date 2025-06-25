@@ -427,9 +427,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const mobileMenuButton = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
-    // Gemini API Configuration
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
-
     // --- Core Functions ---
     function showLoading(container) { container.innerHTML = '<div class="flex justify-center items-center p-6"><div class="loader"></div></div>'; }
     function displayError(container, message) { container.innerHTML = `<div class="p-4 bg-red-100 text-red-700 rounded-md font-semibold text-center">${message}</div>`; }
@@ -445,34 +442,44 @@ document.addEventListener('DOMContentLoaded', function () {
             .replace(/<\/li><br>/g, '</li>')
             .replace(/<br><ul>/g, '<ul>');
     }
+    
     async function callGemini(prompt) {
+        // The API URL for the Gemini model.
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
         const payload = { contents: [{ parts: [{ text: prompt }] }] };
-        const apiKey = "" // Canvas will provide the API key automatically. Do not add it here.
+        const apiKey = ""; // The platform will inject the API key automatically.
         const fullApiUrl = `${apiUrl}?key=${apiKey}`;
-        
+
         try {
-            // Using the base apiUrl directly, platform handles the key.
-            const response = await fetch(apiUrl, {
+            const response = await fetch(fullApiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
+
             if (!response.ok) {
-                const errorBody = await response.json().catch(() => ({}));
-                const errorMessage = errorBody?.error?.message ?? `Sunucu hatası: ${response.status}.`;
+                let errorData;
+                try {
+                    errorData = await response.json();
+                } catch(e) {
+                    errorData = { error: { message: response.statusText } };
+                }
+                const errorMessage = errorData?.error?.message ?? `Sunucu hatası: ${response.status}.`;
                 throw new Error(`API Hatası: ${errorMessage}`);
             }
+
             const data = await response.json();
             if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
                 return data.candidates[0].content.parts[0].text;
             } else {
-                throw new Error("API'den geçerli bir yanıt alınamadı.");
+                throw new Error("API'den geçerli veya beklenen formatta bir yanıt alınamadı.");
             }
         } catch (error) {
             console.error("Gemini API çağrısı başarısız:", error);
             return `Bir sorun oluştu: ${error.message}`;
         }
     }
+
 
     // --- UI Population and Logic ---
     function initializeVocabularyState() {
