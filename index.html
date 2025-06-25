@@ -444,14 +444,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     async function callGemini(prompt) {
-        // The API URL for the Gemini model.
+        // The API URL for the Gemini model, the key will be handled by the platform.
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent`;
         const payload = { contents: [{ parts: [{ text: prompt }] }] };
-        const apiKey = ""; // The platform will inject the API key automatically.
-        const fullApiUrl = `${apiUrl}?key=${apiKey}`;
 
         try {
-            const response = await fetch(fullApiUrl, {
+            const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
